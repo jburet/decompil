@@ -1,5 +1,7 @@
 package interpreter.utils;
 
+import java.io.UnsupportedEncodingException;
+
 import model.classes.ClassAccessFlag;
 import model.classes.ClassFile;
 import model.classes.ConstantClass;
@@ -18,46 +20,42 @@ public class ClassFileUtils {
 
 	public static String decodeThisClass(ClassFile cf) {
 		ConstantPoolInfo[] cp = cf.getConstantPool();
-		return ((UTF8Constant) cp[((ConstantClass) cp[cf.getThisClass() - 1])
-				.getNameConstantIndex() - 1]).getDecodedByte();
+		return decodedByte(((UTF8Constant) cp[((ConstantClass) cp[cf.getThisClass() - 1]).getNameConstantIndex() - 1])
+				.getBytes());
 	}
 
 	public static String decodeSuperClass(ClassFile cf) {
 		if (cf.getSuperClass() != 0) {
 			ConstantPoolInfo[] cp = cf.getConstantPool();
-			return ((UTF8Constant) cp[((ConstantClass) cp[cf.getSuperClass() - 1])
-					.getNameConstantIndex() - 1]).getDecodedByte();
+			return decodedByte(((UTF8Constant) cp[((ConstantClass) cp[cf.getSuperClass() - 1]).getNameConstantIndex() - 1])
+					.getBytes());
 		}
 		return "No super class (java/lang/Object only)";
 	}
 
 	public static String decodeConstant(ClassFile cf, short index) {
 		ConstantPoolInfo[] cp = cf.getConstantPool();
-		return ((UTF8Constant) cp[((ConstantClass) cp[index - 1])
-				.getNameConstantIndex() - 1]).getDecodedByte();
+		return decodedByte(((UTF8Constant) cp[((ConstantClass) cp[index - 1]).getNameConstantIndex() - 1]).getBytes());
 	}
 
 	public static String decodeUTF(ClassFile cf, short index) {
 		ConstantPoolInfo[] cp = cf.getConstantPool();
-		return ((UTF8Constant) cp[index - 1]).getDecodedByte();
+		return decodedByte(((UTF8Constant) cp[index - 1]).getBytes());
 	}
 
 	public static String decodeStaticFieldClass(ClassFile cf, short index) {
 		ConstantPoolInfo[] cp = cf.getConstantPool();
-		return decodeConstant(cf, ((ConstantField) cp[index - 1])
-				.getClassIndex());
+		return decodeConstant(cf, ((ConstantField) cp[index - 1]).getClassIndex());
 	}
 
 	public static String decodeStaticField(ClassFile cf, short index) {
 		ConstantPoolInfo[] cp = cf.getConstantPool();
-		return decodeUTF(cf,
-				(((ConstantNameType) cp[((ConstantField) cp[index - 1])
-						.getNameTypeIndex() - 1]).getNameIndex()));
+		return decodeUTF(cf, (((ConstantNameType) cp[((ConstantField) cp[index - 1]).getNameTypeIndex() - 1])
+				.getNameIndex()));
 
 	}
 
-	public static boolean classAccessFlagContains(ClassAccessFlag[] cafarrays,
-			ClassAccessFlag caf) {
+	public static boolean classAccessFlagContains(ClassAccessFlag[] cafarrays, ClassAccessFlag caf) {
 		for (ClassAccessFlag c : cafarrays) {
 			if (c.equals(caf)) {
 				return true;
@@ -66,8 +64,7 @@ public class ClassFileUtils {
 		return false;
 	}
 
-	public static boolean methodAccessFlagContains(
-			MethodAccessFlag[] mafarrays, MethodAccessFlag maf) {
+	public static boolean methodAccessFlagContains(MethodAccessFlag[] mafarrays, MethodAccessFlag maf) {
 		for (MethodAccessFlag m : mafarrays) {
 			if (m.equals(maf)) {
 				return true;
@@ -76,8 +73,7 @@ public class ClassFileUtils {
 		return false;
 	}
 
-	public static boolean fieldAccessFlagContains(FieldAccessFlag[] fafarrays,
-			FieldAccessFlag faf) {
+	public static boolean fieldAccessFlagContains(FieldAccessFlag[] fafarrays, FieldAccessFlag faf) {
 		for (FieldAccessFlag f : fafarrays) {
 			if (f.equals(faf)) {
 				return true;
@@ -103,16 +99,12 @@ public class ClassFileUtils {
 				descriptor = descriptor.substring(1);
 			}
 			if (descriptor.length() == 1) {
-				return new Descriptor(parseDescriptorPrimitif(descriptor),
-						arrayLevel);
+				return new Descriptor(parseDescriptorPrimitif(descriptor), arrayLevel);
 			} else {
-				return new Descriptor(DescriptorType.CLASS,
-						parseDescriptorClass(descriptor.substring(1)),
-						arrayLevel);
+				return new Descriptor(DescriptorType.CLASS, parseDescriptorClass(descriptor.substring(1)), arrayLevel);
 			}
 		} else if (descriptor.startsWith("L")) {
-			return new Descriptor(DescriptorType.CLASS,
-					parseDescriptorClass(descriptor.substring(1)));
+			return new Descriptor(DescriptorType.CLASS, parseDescriptorClass(descriptor.substring(1)));
 		}
 		// TODO Runtime exception
 		return null;
@@ -125,19 +117,27 @@ public class ClassFileUtils {
 		return ClassFileUtils.convertByteToJavaClassFormat(classString);
 	}
 
+	private static String decodedByte(byte[] bytes) {
+		try {
+			return new String(bytes, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+	}
+
 	public static DescriptorType parseDescriptorPrimitif(String descriptor) {
 		return DescriptorType.getDescriptorFromVmtype(descriptor.charAt(0));
 	}
 
 	public static boolean isDescriptorPrimitif(String descriptor) {
-		DescriptorType dt = DescriptorType.getDescriptorFromVmtype(descriptor
-				.charAt(0));
+		DescriptorType dt = DescriptorType.getDescriptorFromVmtype(descriptor.charAt(0));
 		return dt != null && !dt.equals(DescriptorType.CLASS);
 	}
 
 	public static String getClassName(ClassFile classFile) {
 		String className = ClassFileUtils.decodeThisClass(classFile);
-		return className.substring(className.lastIndexOf('/') + 1, className
-				.length());
+		return className.substring(className.lastIndexOf('/') + 1, className.length());
 	}
 }

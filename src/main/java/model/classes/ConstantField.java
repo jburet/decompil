@@ -25,12 +25,4 @@ public class ConstantField extends ConstantPoolInfo {
 		this.nameTypeIndex = nameTypeIndex;
 	}
 
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[FIELD] class index : ");
-		sb.append(classIndex);
-		sb.append(" nameTypeIndex : ");
-		sb.append(nameTypeIndex);
-		return sb.toString();
-	}
 }

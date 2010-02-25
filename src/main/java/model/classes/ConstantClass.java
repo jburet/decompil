@@ -16,12 +16,4 @@ public class ConstantClass extends ConstantPoolInfo{
 		this.nameConstantIndex = nameConstantIndex;
 	}
 	
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
-		sb.append("[CLASS] NameConstantIndex : ");
-		sb.append(nameConstantIndex);
-		return sb.toString();
-	}
-
-
 }

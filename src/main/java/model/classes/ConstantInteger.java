@@ -17,14 +17,6 @@ public class ConstantInteger extends ConstantPoolValue {
 	}
 
 	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[INTEGER] value : ");
-		sb.append(bytes);
-		return sb.toString();
-	}
-
-	@Override
 	public Object getDecodedBytes() {
 		return getBytes();
 	}

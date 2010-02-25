@@ -24,13 +24,5 @@ public class ConstantNameType extends ConstantPoolInfo {
 	public void setDescritptorIndex(short descritptorIndex) {
 		this.descritptorIndex = descritptorIndex;
 	}
-	
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[NAME_TYPE] nameIndex : ");
-		sb.append(nameIndex);
-		sb.append(" descritptorIndex : ");
-		sb.append(descritptorIndex);
-		return sb.toString();
-	}
+
 }

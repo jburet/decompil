@@ -24,13 +24,4 @@ public class ConstantInterface extends ConstantPoolInfo {
 	public void setNameTypeIndex(short nameTypeIndex) {
 		this.nameTypeIndex = nameTypeIndex;
 	}
-
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[INTERFACE] classIndex : ");
-		sb.append(classIndex);
-		sb.append(" nameTypeIndex : ");
-		sb.append(nameTypeIndex);
-		return sb.toString();
-	}
 }

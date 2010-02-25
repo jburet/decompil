@@ -17,14 +17,6 @@ public class ConstantFloat extends ConstantPoolValue {
 	}
 
 	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[FLOAT] value : ");
-		sb.append(bytes);
-		return sb.toString();
-	}
-
-	@Override
 	public Object getDecodedBytes() {
 		return getBytes();
 	}
