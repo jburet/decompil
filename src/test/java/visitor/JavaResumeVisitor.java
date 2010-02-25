@@ -1,0 +1,201 @@
+package visitor;
+
+import java.util.Map;
+
+import visitor.Visitor;
+
+import model.code.instruction.AssignationArrayInstruction;
+import model.code.instruction.AssignationInstruction;
+import model.code.instruction.ConditionalBrancheInstruction;
+import model.code.instruction.InstanceMethodInvocationInstruction;
+import model.code.instruction.Instruction;
+import model.code.instruction.MethodInstruction;
+import model.code.instruction.ReturnInstruction;
+import model.code.instruction.StatementInstruction;
+import model.code.instruction.StaticMethodInvocationInstruction;
+import model.code.instruction.SwitchInstruction;
+import model.code.instruction.UnconditionalBranching;
+import model.code.operand.ArrayReference;
+import model.code.operand.ObjectReference;
+import model.code.operand.Variable;
+import model.code.operand.impl.ArithmeticOperation;
+import model.code.operand.impl.ArrayAccessInstruction;
+import model.code.operand.impl.ConditionalOperation;
+import model.code.operand.impl.Constant;
+import model.code.operand.impl.ConstantArrayReference;
+import model.code.operand.impl.VariableArrayReference;
+
+public class JavaResumeVisitor implements Visitor {
+
+	@Override
+	public void visitConditionalBranching(ConditionalBrancheInstruction conditionalBranching) {
+		System.out.print("if(");
+		conditionalBranching.getCondition().accept(this);
+		System.out.println(") goto : " + conditionalBranching.getBranchIndex());
+	}
+
+	@Override
+	public void visitUnconditionalBranching(UnconditionalBranching unconditionalBranching) {
+		System.out.println("goto : " + unconditionalBranching.getBranchIndex());
+	}
+
+	@Override
+	public void visitStatementInstruction(StatementInstruction statementInstruction) {
+		System.out.println(statementInstruction.getOpCode().name());
+	}
+
+	@Override
+	public void visitMethodInstruction(MethodInstruction mi) {
+		Map<Short, Instruction> instructionMap = mi.getInstructionsMap();
+		for (short index : instructionMap.keySet()) {
+			instructionMap.get(index).accept(this);
+		}
+	}
+
+	@Override
+	public void visitConditionalOperation(ConditionalOperation conditionalBlock) {
+		conditionalBlock.getOperand1().accept(this);
+		System.out.print(" " + conditionalBlock.getCo().getOp() + " ");
+		conditionalBlock.getOperand2().accept(this);
+	}
+
+	@Override
+	public void visitConstant(Constant constant) {
+		if (constant.isString()) {
+			System.out.print("\"" + constant.getValue() + "\"");
+		} else {
+			System.out.print(constant.getValue());
+		}
+	}
+
+	@Override
+	public void visitVariable(Variable variable) {
+		System.out.print(variable.getName());
+	}
+
+	@Override
+	public void visitObjectReference(ObjectReference objectReference) {
+		System.out.print(objectReference.getName());
+	}
+
+	@Override
+	public void visitAssignation(AssignationInstruction assignationInstruction) {
+		System.out.print(assignationInstruction.getVarName() + " = ");
+		assignationInstruction.getValue().accept(this);
+		System.out.println(";");
+	}
+
+	@Override
+	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
+		if (assignationArrayInstruction.getArrayRef() instanceof VariableArrayReference
+				&& ((VariableArrayReference) assignationArrayInstruction.getArrayRef()).getName() != null) {
+			assignationArrayInstruction.getArrayRef().accept(this);
+			System.out.print("[");
+			assignationArrayInstruction.getIndex().accept(this);
+			System.out.print("] = ");
+			assignationArrayInstruction.getValue().accept(this);
+			System.out.println(";");
+		} else {
+			// TODO On stocke les assignations dans la référence du tableau
+		}
+	}
+
+	@Override
+	public void visitReturn(ReturnInstruction returnInstruction) {
+		System.out.print("return ");
+		if (returnInstruction.getOperand() != null) {
+			returnInstruction.getOperand().accept(this);
+		}
+		System.out.println(";");
+	}
+
+	@Override
+	public void visitInstanceMethodInvocation(InstanceMethodInvocationInstruction instanceMethodInvocationInstruction) {
+		instanceMethodInvocationInstruction.getIntance().accept(this);
+		System.out.print("." + instanceMethodInvocationInstruction.getMethodName() + "(");
+		for (int i = instanceMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
+			instanceMethodInvocationInstruction.getArgs()[i].accept(this);
+			if (i > 0) {
+				System.out.print(", ");
+			}
+		}
+		System.out.println(");");
+	}
+
+	@Override
+	public void visitArrayReference(ArrayReference arrayReference) {
+		if (arrayReference instanceof VariableArrayReference
+				&& ((VariableArrayReference) arrayReference).getName() != null) {
+			System.out.print(((VariableArrayReference) arrayReference).getName());
+		} else if (arrayReference instanceof ConstantArrayReference) {
+			// TODO Sinon on affiche les assignations stockés
+			System.out.print("new ");
+			System.out.print(arrayReference.getObjectType());
+			System.out.print("[] ");
+			System.out.print("{");
+			for (int i = 0; i < ((ConstantArrayReference) arrayReference).getValues().size(); i++) {
+				((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
+				if (((ConstantArrayReference) arrayReference).getValues().size() - i > 1) {
+					System.out.print(", ");
+				}
+			}
+			System.out.print("}");
+		}
+	}
+
+	@Override
+	public void visitArithmethicOperation(ArithmeticOperation arithmeticOperation) {
+		arithmeticOperation.getOp1().accept(this);
+		System.out.print(arithmeticOperation.getType().getSign());
+		arithmeticOperation.getOp2().accept(this);
+	}
+
+	@Override
+	public void visitArrayAccessInstruction(ArrayAccessInstruction arrayAccessInstruction) {
+		arrayAccessInstruction.getArrayReference().accept(this);
+		System.out.print("[");
+		arrayAccessInstruction.getIndex().accept(this);
+		System.out.print("]");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seedecompiler.visitor.Visitor#visitSwitch(decompiler.instruction.
+	 * SwitchInstruction)
+	 */
+	@Override
+	public void visitSwitch(SwitchInstruction switchInstruction) {
+		System.out.print("switch(");
+		switchInstruction.getIndex().accept(this);
+		System.out.println(") {");
+		for (int i = 0; i < switchInstruction.getMatch().length; i++) {
+			System.out.println("case " + switchInstruction.getMatch()[i] + ": ");
+			System.out.println("goto : " + switchInstruction.getJumpOffset()[i] + ";");
+		}
+		System.out.println("default: ");
+		System.out.println("goto : " + switchInstruction.getDefaultIndex() + ";");
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * decompiler.visitor.Visitor#visitStaticMethodInvocation(decompiler.instruction
+	 * .StaticMethodInvocationInstruction)
+	 */
+	@Override
+	public void visitStaticMethodInvocation(StaticMethodInvocationInstruction staticMethodInvocationInstruction) {
+		System.out.print(staticMethodInvocationInstruction.getClassName() + "."
+				+ staticMethodInvocationInstruction.getMethodName() + "(");
+		for (int i = staticMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
+			staticMethodInvocationInstruction.getArgs()[i].accept(this);
+			if (i > 0) {
+				System.out.print(", ");
+			}
+		}
+		System.out.println(");");
+	}
+
+}
