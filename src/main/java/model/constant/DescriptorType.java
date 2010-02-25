@@ -3,7 +3,6 @@
  */
 package model.constant;
 
-import model.code.operand.Type;
 
 /**
  * @author jburet
