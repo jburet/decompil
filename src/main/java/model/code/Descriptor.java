@@ -11,7 +11,7 @@ import model.constant.DescriptorType;
  */
 public class Descriptor {
 
-	private DescriptorType descriptorType;
+	private final DescriptorType descriptorType;
 	private String className;
 	private int arrayLevel = 0;
 
@@ -29,8 +29,7 @@ public class Descriptor {
 		this.arrayLevel = arrayLevel;
 	}
 
-	public Descriptor(DescriptorType descriptorType, String classname,
-			int arrayLevel) {
+	public Descriptor(DescriptorType descriptorType, String classname, int arrayLevel) {
 		this(descriptorType, classname);
 		this.arrayLevel = arrayLevel;
 	}
@@ -41,6 +40,10 @@ public class Descriptor {
 
 	public String getClassName() {
 		return className;
+	}
+
+	public int getArrayLevel() {
+		return arrayLevel;
 	}
 
 }

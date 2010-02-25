@@ -11,23 +11,21 @@ import model.code.operand.Type;
  */
 public enum DescriptorType implements Type {
 
-	BYTE('B', "byte"),
-	CHAR('C', "char"),
-	DOUBLE('D', "double"),
-	FLOAT('F', "float"),
-	INT('I', "int"),
-	LONG('J', "long"),
-	SHORT('S', "short"),
-	BOOLEAN('B', "boolean"),
-	VOID('V', "void"),
-	CLASS('L', "class");
+	BYTE('B'),
+	CHAR('C'),
+	DOUBLE('D'),
+	FLOAT('F'),
+	INT('I'),
+	LONG('J'),
+	SHORT('S'),
+	BOOLEAN('B'),
+	VOID('V'),
+	CLASS('L');
 
 	private char vmType;
-	private String javaType;
 
-	private DescriptorType(char vmType, String javaType) {
+	private DescriptorType(char vmType) {
 		this.vmType = vmType;
-		this.javaType = javaType;
 	}
 
 	public static DescriptorType getDescriptorFromVmtype(char vmType) {
@@ -41,10 +39,6 @@ public enum DescriptorType implements Type {
 
 	public char getVmType() {
 		return vmType;
-	}
-
-	public String getJavaType() {
-		return javaType;
 	}
 
 }

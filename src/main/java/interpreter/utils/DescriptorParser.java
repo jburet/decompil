@@ -1,6 +1,5 @@
 package interpreter.utils;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,20 +12,15 @@ public class DescriptorParser {
 		List<String> res = new ArrayList<String>();
 		// On prend 1 caractère et on verifie si type primitif
 		while (internalDescriptor.length() > 0) {
-			if (ClassFileUtils.isDescriptorPrimitif(internalDescriptor
-					.substring(0, 1))) {
-				res.add(ClassFileUtils.parseDescriptorPrimitif(
-						internalDescriptor.substring(0, 1)).getJavaType());
-				internalDescriptor = internalDescriptor.substring(1,
-						internalDescriptor.length());
+			if (ClassFileUtils.isDescriptorPrimitif(internalDescriptor.substring(0, 1))) {
+				res.add(ClassFileUtils.parseDescriptorPrimitif(internalDescriptor.substring(0, 1)).getJavaType());
+				internalDescriptor = internalDescriptor.substring(1, internalDescriptor.length());
 			}
 			// Sinon on parse la classe
 			else if (internalDescriptor.indexOf(';') > 0) {
-				res.add(internalDescriptor.substring(0, internalDescriptor
-						.indexOf(';')));
-				internalDescriptor = internalDescriptor.substring(
-						internalDescriptor.indexOf(';') + 1, internalDescriptor
-								.length());
+				res.add(internalDescriptor.substring(0, internalDescriptor.indexOf(';')));
+				internalDescriptor = internalDescriptor.substring(internalDescriptor.indexOf(';') + 1,
+						internalDescriptor.length());
 			} else {
 				res.add(internalDescriptor);
 				internalDescriptor = "";
@@ -40,8 +34,7 @@ public class DescriptorParser {
 	 * @param substring
 	 * @return
 	 */
-	public static Descriptor parseReturnDecodedMethodDescriptor(
-			String descriptor) {
+	public static Descriptor parseReturnDecodedMethodDescriptor(String descriptor) {
 		String res;
 		return ClassFileUtils.parseDescriptor(descriptor);
 	}

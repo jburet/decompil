@@ -3,7 +3,6 @@ package model.classes;
 import model.attribute.Attribute;
 import model.field.FieldInfo;
 import model.method.MethodInfo;
-import interpreter.utils.ClassFileUtils;
 
 public class ClassFile {
 
@@ -151,11 +150,6 @@ public class ClassFile {
 
 	public void setAttributes(Attribute[] attributes) {
 		this.attributes = attributes;
-	}
-
-	// Methode concernant classfile
-	public String getDecodeMethodDescriptor(MethodInfo mi) {
-		return ClassFileUtils.decodeUTF(this, mi.getDescriptorIndex());
 	}
 
 }
