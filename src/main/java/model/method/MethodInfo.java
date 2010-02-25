@@ -1,12 +1,13 @@
 package model.method;
 
+import interpreter.utils.ClassFileUtils;
+import interpreter.utils.DescriptorParser;
 import model.attribute.Attribute;
 import model.attribute.AttributeType;
 import model.attribute.Code;
 import model.classes.ClassFile;
 import model.code.Descriptor;
-import interpreter.utils.ClassFileUtils;
-import interpreter.utils.DescriptorParser;
+import model.constant.Type;
 
 public class MethodInfo {
 	private short accessFlags;
@@ -14,7 +15,7 @@ public class MethodInfo {
 	private short descriptorIndex;
 	private short attributesCount;
 	private Attribute[] attributes;
-	// Reference à ça classe
+	// reference to classe
 	private ClassFile referentClassFile;
 
 	public MethodInfo(ClassFile referentClassFile) {
@@ -73,21 +74,20 @@ public class MethodInfo {
 		return null;
 	}
 
-	public String[] getArgType() {
-		String descriptorDecoded = getReferentClassFile()
-				.getDecodeMethodDescriptor(this);
+	public Type[] getArgType() {
+		String descriptorDecoded = this.getDecodeMethodDescriptor();
 		String listType = descriptorDecoded.substring(descriptorDecoded
 				.indexOf('(') + 1, descriptorDecoded.indexOf(')'));
 		return DescriptorParser.parseDecodedMethodDescriptor(listType);
 	}
 
 	public String[] getArgName() {
-		String descriptorDecoded = getReferentClassFile()
-				.getDecodeMethodDescriptor(this);
+		String descriptorDecoded = this.getDecodeMethodDescriptor();
 		String listType = descriptorDecoded.substring(descriptorDecoded
 				.indexOf('(') + 1, descriptorDecoded.indexOf(')'));
-
-		String[] res = DescriptorParser.parseDecodedMethodDescriptor(listType);
+		// FIXME Use debug information if present
+		String[] res = new String[DescriptorParser
+				.parseDecodedMethodDescriptor(listType).length];
 		for (int i = 0; i < res.length; i++) {
 			res[i] = "args" + (i + 1);
 		}
@@ -95,13 +95,17 @@ public class MethodInfo {
 	}
 
 	public Descriptor getReturnType() {
-		String descriptorDecoded = getReferentClassFile()
-				.getDecodeMethodDescriptor(this);
+		String descriptorDecoded = this.getDecodeMethodDescriptor();
 		return ClassFileUtils.parseDescriptor(descriptorDecoded
 				.substring(descriptorDecoded.lastIndexOf(')') + 1));
 	}
 
 	public ClassFile getReferentClassFile() {
 		return referentClassFile;
+	}
+
+	public String getDecodeMethodDescriptor() {
+		return ClassFileUtils.decodeUTF(getReferentClassFile(), this
+				.getDescriptorIndex());
 	}
 }

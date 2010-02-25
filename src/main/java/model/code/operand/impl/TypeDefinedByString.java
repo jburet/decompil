@@ -1,8 +1,8 @@
 package model.code.operand.impl;
 
-import model.code.operand.Type;
+import model.constant.Type;
 
-// FIXME A supprimer et à remplacer une fois la résolution des type locaux effectuées
+// FIXME A supprimer et ï¿½ remplacer une fois la rï¿½solution des type locaux effectuï¿½es
 public class TypeDefinedByString implements Type {
 
 	public TypeDefinedByString(String type) {

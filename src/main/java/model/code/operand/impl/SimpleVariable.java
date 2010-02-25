@@ -1,8 +1,8 @@
 package model.code.operand.impl;
 
 import visitor.Visitor;
-import model.code.operand.Type;
 import model.code.operand.Variable;
+import model.constant.Type;
 
 public class SimpleVariable implements Variable {
 

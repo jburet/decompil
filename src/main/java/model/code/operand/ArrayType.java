@@ -1,5 +1,7 @@
 package model.code.operand;
 
+import model.constant.Type;
+
 public enum ArrayType implements Type {
 
 	T_BOOLEAN((short) 4),

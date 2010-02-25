@@ -2,6 +2,7 @@ package model.code.operand;
 
 import visitor.Visitor;
 import model.code.operand.impl.TypeDefinedByString;
+import model.constant.Type;
 
 public class ObjectReference implements Variable {
 

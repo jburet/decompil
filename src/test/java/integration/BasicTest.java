@@ -1,10 +1,10 @@
 package integration;
 
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
 import generator.impl.ClassGenerator;
 import interpreter.impl.ByteCodeReader;
+
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import model.classes.ClassFile;
 
@@ -24,7 +24,8 @@ public class BasicTest {
 
 	@Test
 	public void parseClassBasic() throws Exception {
-		ClassFile cf = bci.readClassFile("src/test/classes/test/main/TestCode.class");
+		ClassFile cf = bci
+				.readClassFile("src/test/classes/testclasses/TestCode.class");
 		Writer out = new OutputStreamWriter(System.out);
 		gen.generateSource(cf, out);
 		out.close();

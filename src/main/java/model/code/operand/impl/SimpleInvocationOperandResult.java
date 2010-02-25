@@ -3,7 +3,7 @@ package model.code.operand.impl;
 import visitor.Visitor;
 import model.code.instruction.MethodInvocation;
 import model.code.operand.Operand;
-import model.code.operand.Type;
+import model.constant.Type;
 
 public class SimpleInvocationOperandResult extends InvocationOperandResult implements Operand {
 

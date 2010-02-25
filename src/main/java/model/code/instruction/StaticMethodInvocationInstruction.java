@@ -5,7 +5,7 @@ package model.code.instruction;
 
 import visitor.Visitor;
 import model.code.operand.Operand;
-import model.code.operand.Type;
+import model.constant.Type;
 
 /**
  * @author jburet

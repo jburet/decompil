@@ -4,7 +4,7 @@ import visitor.Visitor;
 import model.code.instruction.MethodInvocation;
 import model.code.operand.ArrayReference;
 import model.code.operand.Operand;
-import model.code.operand.Type;
+import model.constant.Type;
 
 public class ArrayRefInvocationOperandResult extends InvocationOperandResult implements Operand, ArrayReference {
 

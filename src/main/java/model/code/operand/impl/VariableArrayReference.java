@@ -4,8 +4,8 @@ import visitor.Visitor;
 import model.code.operand.ArrayReference;
 import model.code.operand.ArrayType;
 import model.code.operand.Operand;
-import model.code.operand.Type;
 import model.code.operand.Variable;
+import model.constant.Type;
 
 /**
  * 

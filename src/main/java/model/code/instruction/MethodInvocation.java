@@ -1,6 +1,6 @@
 package model.code.instruction;
 
-import model.code.operand.Type;
+import model.constant.Type;
 
 public abstract class MethodInvocation extends Instruction{
 
