@@ -125,13 +125,20 @@ public class JavaResumeVisitor implements Visitor {
 		if (arrayReference instanceof ArrayReference && ((ArrayReference) arrayReference).getName() != null) {
 			System.out.print(((ArrayReference) arrayReference).getName());
 		} else if (arrayReference instanceof ConstantArrayReference) {
-			// TODO Sinon on affiche les assignations stock�s
+			// TODO Sinon on affiche les assignations stockes
 			System.out.print("new ");
 			System.out.print(arrayReference.getObjectType());
 			System.out.print("[] ");
 			System.out.print("{");
+			// FIXME On doit utilise la taille de l'array reference et non pas
+			// la taille de la liste
 			for (int i = 0; i < ((ConstantArrayReference) arrayReference).getValues().size(); i++) {
-				((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
+				if (((ConstantArrayReference) arrayReference).getValues().get(i) != null) {
+					((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
+				} else {
+					// FIXME (null ou la valeur par defaut si type primitif
+					System.out.print("null ");
+				}
 				if (((ConstantArrayReference) arrayReference).getValues().size() - i > 1) {
 					System.out.print(", ");
 				}

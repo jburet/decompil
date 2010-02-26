@@ -43,7 +43,7 @@ public class ArrayReference implements Array, Variable {
 	}
 
 	@Override
-	public void addValue(Operand value) {
+	public void addValue(Operand index, Operand value) {
 		// TODO Auto-generated method stub
 
 	}

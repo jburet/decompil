@@ -58,11 +58,15 @@ public class ConstantArrayReference implements Array {
 		return this.values;
 	}
 
-	public void addValue(Operand obj) {
+	public void addValue(Operand index, Operand obj) {
 		if (this.values == null) {
 			this.values = new ArrayList<Operand>();
 		}
-		this.values.add(obj);
+		if (index instanceof Constant) {
+			this.values.add(Integer.parseInt(((Constant) index).getValue()), obj);
+		} else {
+			this.values.add(obj);
+		}
 	}
 
 }

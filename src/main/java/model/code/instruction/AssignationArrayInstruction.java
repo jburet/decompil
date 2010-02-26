@@ -1,8 +1,8 @@
 package model.code.instruction;
 
-import visitor.Visitor;
 import model.code.operand.Array;
 import model.code.operand.Operand;
+import visitor.Visitor;
 
 public class AssignationArrayInstruction extends Instruction {
 
@@ -10,12 +10,11 @@ public class AssignationArrayInstruction extends Instruction {
 	private Operand value;
 	private Operand index;
 
-	public AssignationArrayInstruction(short currentIndex, Operand value, Operand index,
-			Array objectReference) {
+	public AssignationArrayInstruction(short currentIndex, Operand value, Operand index, Array objectReference) {
 		super(currentIndex);
 		this.arrayRef = objectReference;
 		this.value = value;
-		this.arrayRef.addValue(value);
+		this.arrayRef.addValue(index, value);
 		this.index = index;
 	}
 

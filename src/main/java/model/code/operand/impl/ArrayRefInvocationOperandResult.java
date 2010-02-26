@@ -32,7 +32,7 @@ public class ArrayRefInvocationOperandResult extends InvocationOperandResult imp
 	// FIXME ou pas... Dans le cas d'une variable on ne conserve pas les
 	// valeurs.
 	@Override
-	public void addValue(Operand value) {
+	public void addValue(Operand index, Operand value) {
 		// TODO Auto-generated method stub
 
 	}

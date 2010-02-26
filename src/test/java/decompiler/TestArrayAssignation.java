@@ -4,25 +4,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import interpreter.impl.ByteCodeReader;
 import interpreter.impl.OpCodeInterpreter;
-
 import model.classes.ClassFile;
+import model.code.instruction.AssignationArrayInstruction;
 import model.code.instruction.AssignationInstruction;
 import model.code.instruction.MethodInstruction;
 import model.code.operand.Array;
-import model.code.operand.impl.InvocationOperandResult;
+import model.code.operand.impl.ConstantArrayReference;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import visitor.JavaResumeVisitor;
 
 public class TestArrayAssignation {
 	private ByteCodeReader bci;
 	private OpCodeInterpreter cd;
+	private JavaResumeVisitor jrv;
 
 	@Before
 	public void setup() {
 		bci = new ByteCodeReader();
 		cd = new OpCodeInterpreter();
+		jrv = new JavaResumeVisitor();
 	}
 
 	@Test
@@ -40,9 +43,10 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[2]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		jrv.visitMethodInstruction(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction ai = (AssignationArrayInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test

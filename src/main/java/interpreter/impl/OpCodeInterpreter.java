@@ -11,7 +11,11 @@ import java.util.Stack;
 import model.attribute.Code;
 import model.classes.ClassFile;
 import model.classes.ConstantClass;
+import model.classes.ConstantDouble;
 import model.classes.ConstantField;
+import model.classes.ConstantFloat;
+import model.classes.ConstantInteger;
+import model.classes.ConstantLong;
 import model.classes.ConstantNameType;
 import model.classes.ConstantPoolInfo;
 import model.classes.ConstantString;
@@ -96,6 +100,8 @@ public class OpCodeInterpreter {
 		short currentPosition = 0;
 		// Tmp Operand
 		Operand operand;
+		// Tmp Constant
+		Constant c;
 		// Variable temporaire tableswitch
 		int defaultIndex;
 		int highIndex;
@@ -287,6 +293,21 @@ public class OpCodeInterpreter {
 			case aconst_null:
 				operandStack.push(ObjectReference.NULL_REFERENCE);
 				break;
+			case fconst_0:
+				operandStack.push(new Constant("float", "0.0"));
+				break;
+			case fconst_1:
+				operandStack.push(new Constant("float", "1.0"));
+				break;
+			case fconst_2:
+				operandStack.push(new Constant("float", "2.0"));
+				break;
+			case dconst_0:
+				operandStack.push(new Constant("double", "0.0d"));
+				break;
+			case dconst_1:
+				operandStack.push(new Constant("double", "1.0d"));
+				break;
 
 			// Ajout d'un field static dans la stack
 			case getstatic:
@@ -302,7 +323,19 @@ public class OpCodeInterpreter {
 			// Ajout d'une constante du constant pool dans la stack
 			case ldc:
 				tmpIndex = getUnsignedValue(code[++i]);
-				Constant c = getConstantFromConstantPool(tmpIndex, methodInfo.getReferentClassFile());
+				c = getConstantFromConstantPool(tmpIndex, methodInfo.getReferentClassFile());
+				operandStack.push(c);
+				break;
+
+			case ldc_w:
+				tmpIndex = getIndex(code[++i], code[++i]);
+				c = getConstantFromConstantPool(tmpIndex, methodInfo.getReferentClassFile());
+				operandStack.push(c);
+				break;
+
+			case ldc2_w:
+				tmpIndex = getIndex(code[++i], code[++i]);
+				c = getConstantFromConstantPool(tmpIndex, methodInfo.getReferentClassFile());
 				operandStack.push(c);
 				break;
 
@@ -349,13 +382,13 @@ public class OpCodeInterpreter {
 
 			case invokevirtual:
 				// Methode de d'instance
-				// On r�cup�re la r�f�rence ce la m�thode � appeler
+				// On recupere la reference ce la methode a appeler
 				constantField = (ConstantField) constants[getIndex(code[++i], code[++i]) - 1];
 				constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
-				// On r�cup�re le nom de la m�thode � appeler.
+				// On recupere le nom de la methode a appeler.
 				tmpMethodName = ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantNameType
 						.getNameIndex());
-				// On la signatures de la m�thode
+				// On la signatures de la methode
 				descriptor = ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantNameType
 						.getDescritptorIndex());
 				argsType = DescriptorParser.parseDecodedMethodDescriptor(descriptor.substring(
@@ -444,6 +477,9 @@ public class OpCodeInterpreter {
 				currentInstruction.addInstruction(currentPosition, new ReturnInstruction(currentPosition));
 				break;
 
+			case dreturn:
+			case freturn:
+			case lreturn:
 			case areturn:
 			case ireturn:
 				currentInstruction.addInstruction(currentPosition, new ReturnInstruction(currentPosition, operandStack
@@ -461,7 +497,7 @@ public class OpCodeInterpreter {
 			// Switch
 			case tableswitch:
 				// Des bytes de padding peuvent etre present pour que le
-				// d�but
+				// debut
 				// du switch soit sur un multiple de 4
 				i = alignOnInt(i);
 				defaultIndex = getWideIndex(code[++i], code[++i], code[++i], code[++i]);
@@ -565,18 +601,17 @@ public class OpCodeInterpreter {
 			// constants
 			c = new Constant("java.lang.String", ClassFileUtils.decodeUTF(cf, ((ConstantString) cpi).getStringIndex()));
 			break;
-		// TODO D�codage de tous les type num�rique
 		case ConstantType.DOUBLE:
-			c = new Constant("double", ClassFileUtils.decodeUTF(cf, ((ConstantString) cpi).getStringIndex()));
+			c = new Constant("double", Double.toString(((ConstantDouble) cpi).getBytes()));
 			break;
 		case ConstantType.FLOAT:
-			c = new Constant("float", ClassFileUtils.decodeUTF(cf, ((ConstantString) cpi).getStringIndex()));
+			c = new Constant("float", Float.toString(((ConstantFloat) cpi).getBytes()));
 			break;
 		case ConstantType.INTEGER:
-			c = new Constant("int", ClassFileUtils.decodeUTF(cf, ((ConstantString) cpi).getStringIndex()));
+			c = new Constant("int", Integer.toString(((ConstantInteger) cpi).getBytes()));
 			break;
 		case ConstantType.LONG:
-			c = new Constant("long", ClassFileUtils.decodeUTF(cf, ((ConstantString) cpi).getStringIndex()));
+			c = new Constant("long", Long.toString(((ConstantLong) cpi).getBytes()));
 			break;
 		default:
 			// TODO RuntimeError

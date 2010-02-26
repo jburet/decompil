@@ -21,7 +21,6 @@ import model.attribute.ConstantValue;
 import model.attribute.Exception;
 import model.attribute.ExceptionTable;
 import model.attribute.InnerClassAttribute;
-import model.attribute.LocalVariableTableAttribute;
 import model.attribute.RuntimeInvisibleAnnotations;
 import model.attribute.RuntimeParameterAnnotations;
 import model.attribute.SyntheticAttribute;
@@ -54,7 +53,7 @@ public class ByteCodeReader {
 	}
 
 	private ClassFile readClass(DataInputStream dis) {
-		// On lit les différents paramétre attendu
+		// On lit les differents parametre attendu
 		ClassFile classFile = new ClassFile();
 		// Magic
 		try {
@@ -74,8 +73,8 @@ public class ByteCodeReader {
 			while (nbConstantToRead > 0) {
 				tmpCpi = readConstantPoolInfo(dis);
 				constants.add(tmpCpi);
-				// FIX On doit ajouter des entrées vide si la constant est
-				// stocké sur plusieurs entrées (Double, Long) see Classfile
+				// FIX On doit ajouter des entrees vide si la constant est
+				// stocke sur plusieurs entrees (Double, Long) see Classfile
 				// format 4.5.5
 				for (int i = 1; i < tmpCpi.getConstantCount(); i++) {
 					constants.add(null);
@@ -196,7 +195,7 @@ public class ByteCodeReader {
 		case Synthetic:
 			SyntheticAttribute syntheticAttribute = new SyntheticAttribute(att);
 			return syntheticAttribute;
-			// TODO Tous les optionnels qui peuvent être ulterieurement au
+			// TODO Tous les optionnels qui peuventetre ulterieurement au
 			// formattage
 			// La les truc merdiques (pas vraiment optionnel) (java 5)
 			// commence....
@@ -265,7 +264,7 @@ public class ByteCodeReader {
 	}
 
 	private ConstantPoolInfo readConstantPoolInfo(DataInputStream dis) throws IOException {
-		// On lit un octet pour déterminer le type.
+		// On lit un octet pour determiner le type.
 		byte tag = dis.readByte();
 		switch (tag) {
 		case ConstantType.CLASS:

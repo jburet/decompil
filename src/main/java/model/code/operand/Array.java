@@ -4,7 +4,7 @@ import model.constant.Type;
 
 public interface Array extends Operand {
 
-	void addValue(Operand value);
+	void addValue(Operand index, Operand value);
 
 	Type getObjectType();
 
