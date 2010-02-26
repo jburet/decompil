@@ -3,7 +3,6 @@
  */
 package model.constant;
 
-
 /**
  * @author jburet
  * 
@@ -17,7 +16,7 @@ public enum DescriptorType implements Type {
 	INT('I'),
 	LONG('J'),
 	SHORT('S'),
-	BOOLEAN('B'),
+	BOOLEAN('Z'),
 	VOID('V'),
 	CLASS('L');
 
@@ -38,6 +37,11 @@ public enum DescriptorType implements Type {
 
 	public char getVmType() {
 		return vmType;
+	}
+
+	@Override
+	public boolean isArray() {
+		return false;
 	}
 
 }

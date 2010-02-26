@@ -3,12 +3,11 @@ package model.code.operand.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import visitor.Visitor;
-
-import model.code.operand.ArrayReference;
+import model.code.operand.Array;
 import model.code.operand.ArrayType;
 import model.code.operand.Operand;
-
+import model.constant.Type;
+import visitor.Visitor;
 
 /**
  * 
@@ -17,13 +16,13 @@ import model.code.operand.Operand;
  *         Represente un tableau... Si le type de tableau est d'object.
  *         objectType est obligatoire et contient le type du tableau
  */
-public class ConstantArrayReference implements ArrayReference {
+public class ConstantArrayReference implements Array {
 
-	private ArrayType arrayType;
+	private final ArrayType arrayType;
 
-	private String objectType;
+	private Type objectType;
 
-	private Operand size;
+	private final Operand size;
 
 	private List<Operand> values;
 
@@ -32,8 +31,7 @@ public class ConstantArrayReference implements ArrayReference {
 		this.size = size;
 	}
 
-	public ConstantArrayReference(ArrayType arrayType, String objectType,
-			Operand size) {
+	public ConstantArrayReference(ArrayType arrayType, Type objectType, Operand size) {
 		this.arrayType = arrayType;
 		this.size = size;
 		this.objectType = objectType;
@@ -52,7 +50,7 @@ public class ConstantArrayReference implements ArrayReference {
 		return size;
 	}
 
-	public String getObjectType() {
+	public Type getObjectType() {
 		return objectType;
 	}
 

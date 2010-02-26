@@ -4,12 +4,13 @@
 package model.code;
 
 import model.constant.DescriptorType;
+import model.constant.Type;
 
 /**
  * @author jburet
  * 
  */
-public class Descriptor {
+public class Descriptor implements Type {
 
 	private final DescriptorType descriptorType;
 	private String className;
@@ -44,6 +45,11 @@ public class Descriptor {
 
 	public int getArrayLevel() {
 		return arrayLevel;
+	}
+
+	@Override
+	public boolean isArray() {
+		return arrayLevel > 0;
 	}
 
 }

@@ -9,13 +9,18 @@ package model.constant;
  */
 public class ClassReferenceType implements Type {
 
-	private String classDescriptor;
+	private final String classDescriptor;
 
 	/**
 	 * @param substring
 	 */
 	public ClassReferenceType(String classDescriptor) {
 		this.classDescriptor = classDescriptor;
+	}
+
+	@Override
+	public boolean isArray() {
+		return false;
 	}
 
 }

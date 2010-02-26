@@ -2,11 +2,18 @@ package model.code.operand.impl;
 
 import model.constant.Type;
 
-// FIXME A supprimer et � remplacer une fois la r�solution des type locaux effectu�es
+// FIXME A supprimer et a remplacer une fois la resolution des type locaux effectuees
 public class TypeDefinedByString implements Type {
 
+	private final String type;
+
 	public TypeDefinedByString(String type) {
-		// TODO Auto-generated constructor stub
+		this.type = type;
+	}
+
+	@Override
+	public boolean isArray() {
+		return false;
 	}
 
 }

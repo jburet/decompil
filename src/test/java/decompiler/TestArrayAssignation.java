@@ -8,7 +8,7 @@ import interpreter.impl.OpCodeInterpreter;
 import model.classes.ClassFile;
 import model.code.instruction.AssignationInstruction;
 import model.code.instruction.MethodInstruction;
-import model.code.operand.ArrayReference;
+import model.code.operand.Array;
 import model.code.operand.impl.InvocationOperandResult;
 
 import org.junit.Before;
@@ -32,7 +32,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -222,7 +222,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -242,7 +242,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -262,7 +262,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 	@Test
@@ -272,7 +272,7 @@ public class TestArrayAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof ArrayReference);
+		assertTrue(ai.getValue() instanceof Array);
 	}
 
 }

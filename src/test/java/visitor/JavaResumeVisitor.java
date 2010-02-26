@@ -2,8 +2,6 @@ package visitor;
 
 import java.util.Map;
 
-import visitor.Visitor;
-
 import model.code.instruction.AssignationArrayInstruction;
 import model.code.instruction.AssignationInstruction;
 import model.code.instruction.ConditionalBrancheInstruction;
@@ -15,15 +13,15 @@ import model.code.instruction.StatementInstruction;
 import model.code.instruction.StaticMethodInvocationInstruction;
 import model.code.instruction.SwitchInstruction;
 import model.code.instruction.UnconditionalBranching;
-import model.code.operand.ArrayReference;
+import model.code.operand.Array;
 import model.code.operand.ObjectReference;
 import model.code.operand.Variable;
 import model.code.operand.impl.ArithmeticOperation;
 import model.code.operand.impl.ArrayAccessInstruction;
+import model.code.operand.impl.ArrayReference;
 import model.code.operand.impl.ConditionalOperation;
 import model.code.operand.impl.Constant;
 import model.code.operand.impl.ConstantArrayReference;
-import model.code.operand.impl.VariableArrayReference;
 
 public class JavaResumeVisitor implements Visitor {
 
@@ -87,8 +85,8 @@ public class JavaResumeVisitor implements Visitor {
 
 	@Override
 	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
-		if (assignationArrayInstruction.getArrayRef() instanceof VariableArrayReference
-				&& ((VariableArrayReference) assignationArrayInstruction.getArrayRef()).getName() != null) {
+		if (assignationArrayInstruction.getArrayRef() instanceof ArrayReference
+				&& ((ArrayReference) assignationArrayInstruction.getArrayRef()).getName() != null) {
 			assignationArrayInstruction.getArrayRef().accept(this);
 			System.out.print("[");
 			assignationArrayInstruction.getIndex().accept(this);
@@ -96,7 +94,7 @@ public class JavaResumeVisitor implements Visitor {
 			assignationArrayInstruction.getValue().accept(this);
 			System.out.println(";");
 		} else {
-			// TODO On stocke les assignations dans la référence du tableau
+			// TODO On stocke les assignations dans la reference du tableau
 		}
 	}
 
@@ -123,12 +121,11 @@ public class JavaResumeVisitor implements Visitor {
 	}
 
 	@Override
-	public void visitArrayReference(ArrayReference arrayReference) {
-		if (arrayReference instanceof VariableArrayReference
-				&& ((VariableArrayReference) arrayReference).getName() != null) {
-			System.out.print(((VariableArrayReference) arrayReference).getName());
+	public void visitArrayReference(Array arrayReference) {
+		if (arrayReference instanceof ArrayReference && ((ArrayReference) arrayReference).getName() != null) {
+			System.out.print(((ArrayReference) arrayReference).getName());
 		} else if (arrayReference instanceof ConstantArrayReference) {
-			// TODO Sinon on affiche les assignations stockés
+			// TODO Sinon on affiche les assignations stockï¿½s
 			System.out.print("new ");
 			System.out.print(arrayReference.getObjectType());
 			System.out.print("[] ");

@@ -1,17 +1,17 @@
 package model.code.instruction;
 
 import visitor.Visitor;
-import model.code.operand.ArrayReference;
+import model.code.operand.Array;
 import model.code.operand.Operand;
 
 public class AssignationArrayInstruction extends Instruction {
 
-	private ArrayReference arrayRef;
+	private Array arrayRef;
 	private Operand value;
 	private Operand index;
 
 	public AssignationArrayInstruction(short currentIndex, Operand value, Operand index,
-			ArrayReference objectReference) {
+			Array objectReference) {
 		super(currentIndex);
 		this.arrayRef = objectReference;
 		this.value = value;
@@ -28,7 +28,7 @@ public class AssignationArrayInstruction extends Instruction {
 		return index;
 	}
 
-	public ArrayReference getArrayRef() {
+	public Array getArrayRef() {
 		return arrayRef;
 	}
 

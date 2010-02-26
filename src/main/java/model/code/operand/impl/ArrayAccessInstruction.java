@@ -1,16 +1,16 @@
 package model.code.operand.impl;
 
 import visitor.Visitor;
-import model.code.operand.ArrayReference;
+import model.code.operand.Array;
 import model.code.operand.Operand;
 
 public class ArrayAccessInstruction implements Operand {
 
-	private ArrayReference arrayReference;
+	private Array arrayReference;
 
 	private Operand index;
 
-	public ArrayAccessInstruction(Operand index, ArrayReference arrayReference) {
+	public ArrayAccessInstruction(Operand index, Array arrayReference) {
 		this.arrayReference = arrayReference;
 		this.index = index;
 	}
@@ -20,7 +20,7 @@ public class ArrayAccessInstruction implements Operand {
 		visitor.visitArrayAccessInstruction(this);
 	}
 
-	public ArrayReference getArrayReference() {
+	public Array getArrayReference() {
 		return arrayReference;
 	}
 

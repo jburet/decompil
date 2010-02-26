@@ -10,7 +10,7 @@ import model.code.instruction.StatementInstruction;
 import model.code.instruction.StaticMethodInvocationInstruction;
 import model.code.instruction.SwitchInstruction;
 import model.code.instruction.UnconditionalBranching;
-import model.code.operand.ArrayReference;
+import model.code.operand.Array;
 import model.code.operand.ObjectReference;
 import model.code.operand.Variable;
 import model.code.operand.impl.ArithmeticOperation;
@@ -42,7 +42,7 @@ public interface Visitor {
 
 	public void visitObjectReference(ObjectReference objectReference);
 
-	public void visitArrayReference(ArrayReference arrayReference);
+	public void visitArrayReference(Array arrayReference);
 
 	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction);
 

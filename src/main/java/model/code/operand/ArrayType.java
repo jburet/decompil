@@ -15,21 +15,26 @@ public enum ArrayType implements Type {
 	T_REF((short) 0);
 
 	private short code;
-	
+
 	private ArrayType(short code) {
 		this.code = code;
 	}
-	
-	public short getCode(){
+
+	public short getCode() {
 		return this.code;
 	}
-		
-	public static ArrayType getByCode(short code){
-		for(ArrayType at : values()){
-			if(at.getCode()==code){
+
+	public static ArrayType getByCode(short code) {
+		for (ArrayType at : values()) {
+			if (at.getCode() == code) {
 				return at;
 			}
 		}
 		return T_REF;
+	}
+
+	@Override
+	public boolean isArray() {
+		return true;
 	}
 }
