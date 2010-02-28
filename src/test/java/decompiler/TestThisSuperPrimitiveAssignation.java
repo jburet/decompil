@@ -1,0 +1,124 @@
+package decompiler;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import interpreter.impl.ByteCodeReader;
+import interpreter.impl.OpCodeInterpreter;
+import model.classes.ClassFile;
+import model.code.instruction.AssignationInstruction;
+import model.code.instruction.MethodInstruction;
+import model.code.operand.ObjectReference;
+import model.code.operand.impl.SimpleVariable;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import utils.debug.ClassFilePrinter;
+import visitor.JavaResumeVisitor;
+
+public class TestThisSuperPrimitiveAssignation {
+	private ByteCodeReader bci;
+	private ClassFilePrinter cfp;
+	private OpCodeInterpreter cd;
+	private JavaResumeVisitor jrv;
+
+	@Before
+	public void setup() {
+		bci = new ByteCodeReader();
+		cfp = new ClassFilePrinter();
+		cd = new OpCodeInterpreter();
+		jrv = new JavaResumeVisitor();
+	}
+
+	@Test
+	public void testReadIntSuperInstanceField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[2]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertTrue(ai.getValue() instanceof ObjectReference);
+		ObjectReference or = (ObjectReference) ai.getValue();
+		assertNotNull(or.getOperandReference());
+		assertEquals("varint", ((ObjectReference) ai.getValue()).getName());
+	}
+
+	@Test
+	public void testWriteIntSuperInstanceField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[3]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertEquals("varint", ai.getVarName());
+		assertTrue(ai.getValue() instanceof SimpleVariable);
+	}
+
+	@Test
+	public void testReadIntSuperStaticField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[4]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertTrue(ai.getValue() instanceof ObjectReference);
+		assertEquals("staticint", ((ObjectReference) ai.getValue()).getName());
+	}
+
+	@Test
+	public void testWriteIntSuperStaticField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[5]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertEquals("staticint", ai.getVarName());
+		assertTrue(ai.getValue() instanceof SimpleVariable);
+	}
+
+	@Test
+	public void testReadIntInstanceField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[6]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertTrue(ai.getValue() instanceof ObjectReference);
+		assertEquals("varint", ((ObjectReference) ai.getValue()).getName());
+	}
+
+	@Test
+	public void testWriteIntInstanceField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[7]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertEquals("varint", ai.getVarName());
+		assertTrue(ai.getValue() instanceof SimpleVariable);
+	}
+
+	@Test
+	public void testReadIntStaticField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[8]);
+		assertNotNull(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertTrue(ai.getValue() instanceof ObjectReference);
+		assertEquals("staticint", ((ObjectReference) ai.getValue()).getName());
+	}
+
+	@Test
+	public void testWriteIntStaticField() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/SuperPrimitiveAssignation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[9]);
+		assertNotNull(mi);
+		jrv.visitMethodInstruction(mi);
+		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertEquals("staticint", ai.getVarName());
+		assertTrue(ai.getValue() instanceof SimpleVariable);
+	}
+}

@@ -4,8 +4,8 @@ import testclasses.TestUtils;
 
 public class PrimitiveAssignation {
 
-	private int varint = 10;
-	private static int staticint = 10;
+	protected int varint = 10;
+	protected static int staticint = 10;
 
 	// From constant pool
 	public void constantIntAssignation() {

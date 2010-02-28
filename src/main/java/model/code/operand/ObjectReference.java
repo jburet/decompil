@@ -1,21 +1,38 @@
 package model.code.operand;
 
-import visitor.Visitor;
 import model.code.operand.impl.TypeDefinedByString;
 import model.constant.Type;
+import visitor.Visitor;
 
 public class ObjectReference implements Variable {
 
-	public static ObjectReference NULL_REFERENCE = new ObjectReference(null, null, new TypeDefinedByString("null"));
+	public static ObjectReference NULL_REFERENCE = new ObjectReference(null, null, null,
+			new TypeDefinedByString("null"));
 
+	/**
+	 * Instance of object reference
+	 */
 	private Operand operandReference;
 
+	/**
+	 * Class defining the ref
+	 */
+	private String classReference;
+
+	/**
+	 * Name of variable
+	 */
 	private String name;
 
 	private Type type;
 
-	public ObjectReference(Operand operandReference, String name, Type type) {
+	public static ObjectReference getNULL_REFERENCE() {
+		return NULL_REFERENCE;
+	}
+
+	public ObjectReference(Operand operandReference, String classReference, String name, Type type) {
 		this.operandReference = operandReference;
+		this.classReference = classReference;
 		this.name = name;
 		this.type = type;
 	}
@@ -41,6 +58,10 @@ public class ObjectReference implements Variable {
 
 	public Operand getOperandReference() {
 		return operandReference;
+	}
+
+	public String getClassReference() {
+		return classReference;
 	}
 
 }

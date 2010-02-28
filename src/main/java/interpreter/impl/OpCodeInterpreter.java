@@ -46,7 +46,6 @@ import model.code.operand.impl.Constant;
 import model.code.operand.impl.ConstantArrayReference;
 import model.code.operand.impl.SimpleInvocationOperandResult;
 import model.code.operand.impl.SimpleVariable;
-import model.code.operand.impl.TypeDefinedByString;
 import model.constant.DescriptorType;
 import model.constant.Type;
 import model.method.MethodInfo;
@@ -497,9 +496,13 @@ public class OpCodeInterpreter {
 				// FIXME On genere de ObjectReference ou un ArrayReference selon
 				// le type
 				tmpIndex = getIndex(code[++i], code[++i]);
-				// FIXME on recupere la class du constantpool
+				constantField = (ConstantField) constants[tmpIndex - 1];
+				constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
 				operandStack.push(new ObjectReference(null, ClassFileUtils.decodeStaticFieldClass(methodInfo
-						.getReferentClassFile(), (short) tmpIndex), new TypeDefinedByString("FIXME")));
+						.getReferentClassFile(), (short) tmpIndex), ClassFileUtils.decodeUTF(methodInfo
+						.getReferentClassFile(), constantNameType.getNameIndex()), DescriptorParser
+						.parseReturnDecodedMethodDescriptor(ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(),
+								constantNameType.getDescritptorIndex()))));
 				break;
 
 			case putstatic:
@@ -670,6 +673,7 @@ public class OpCodeInterpreter {
 			case getfield:
 				constantField = (ConstantField) constants[getIndex(code[++i], code[++i]) - 1];
 				constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
+				constantClass = (ConstantClass) constants[constantField.getClassIndex() - 1];
 				// FIXME Definition du type (disponible dans constantNameType)
 				// On determine si c'est une reference a un tableau ou non
 				Descriptor desc = ClassFileUtils.parseDescriptor(ClassFileUtils.decodeUTF(methodInfo
@@ -680,7 +684,10 @@ public class OpCodeInterpreter {
 							.getReferentClassFile(), constantNameType.getNameIndex()), null, 1));
 				} else {
 					operandStack.push(new ObjectReference(operandStack.pop(), ClassFileUtils.decodeUTF(methodInfo
-							.getReferentClassFile(), constantNameType.getNameIndex()), null));
+							.getReferentClassFile(), constantClass.getNameConstantIndex()), ClassFileUtils.decodeUTF(
+							methodInfo.getReferentClassFile(), constantNameType.getNameIndex()), DescriptorParser
+							.parseReturnDecodedMethodDescriptor(ClassFileUtils.decodeUTF(methodInfo
+									.getReferentClassFile(), constantNameType.getDescritptorIndex()))));
 				}
 
 				break;
@@ -715,7 +722,7 @@ public class OpCodeInterpreter {
 				// On recupere le nom de la methode a appeler.
 				tmpClassName = ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantClass
 						.getNameConstantIndex());
-				operandStack.push(new ObjectReference(null, tmpClassName, null));
+				operandStack.push(new ObjectReference(null, null, tmpClassName, null));
 				break;
 
 			// Switch
