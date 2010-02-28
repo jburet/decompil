@@ -35,6 +35,7 @@ import model.code.instruction.UnconditionalBranching;
 import model.code.operand.ArithmeticOperationType;
 import model.code.operand.Array;
 import model.code.operand.ArrayType;
+import model.code.operand.ConditionalOperator;
 import model.code.operand.ObjectReference;
 import model.code.operand.Operand;
 import model.code.operand.Variable;
@@ -100,8 +101,12 @@ public class OpCodeInterpreter {
 		short currentPosition = 0;
 		// Tmp Operand
 		Operand operand;
+		// Tmp Operand[]
+		Operand[] operandArray;
 		// Tmp Constant
 		Constant c;
+		// tmp dimenssion
+		int dimension;
 		// Variable temporaire tableswitch
 		int defaultIndex;
 		int highIndex;
@@ -123,34 +128,72 @@ public class OpCodeInterpreter {
 
 			// Analyse de l'opcode courant
 			switch (opc) {
-			// Cas d'un if avec une condition par rapport a 0;
+			// Comparaison d'un int par rapport a 0
+			// Le int a comparer se recupere dans la pile
+			// Les 2 arguments permette de construire l'adresse ou aller si
+			// la condition n'est pas respectee.
 			case ifeq:
-			case ifne:
-			case iflt:
-			case ifle:
-			case ifgt:
-			case ifge:
-				// Comparaison d'un int par rapport a 0
-				// Le int a comparer se recupere dans la pile
-				// Les 2 arguments permette de construire l'adresse ou aller si
-				// la condition n'est pas respectee.
 				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
-				currentInstruction.addInstruction(currentPosition, createConditionalBranching(opc, i,
-						endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.EQ,
+						i, endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
 				break;
-
-			case if_icmpeq:
-			case if_icmpge:
-			case if_icmpgt:
-			case if_icmple:
-			case if_icmplt:
-			case if_icmpne:
-				// Comparaison des 2 premiers int de la stack
-				// Les 2 arguments permette de construire l'adresse ou aller si
-				// la condition n'est pas respectee.
+			case ifne:
 				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
-				currentInstruction.addInstruction(currentPosition, createConditionalBranching(opc, i,
-						endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.NE,
+						i, endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
+				break;
+			case iflt:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.LT,
+						i, endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
+				break;
+			case ifle:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.LE,
+						i, endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
+				break;
+			case ifgt:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.GT,
+						i, endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
+				break;
+			case ifge:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.GE,
+						i, endOfCurrentBlock, operandStack.pop(), new Constant("int", "0")));
+				break;
+			// Comparaison des 2 premiers int de la stack
+			// Les 2 arguments permette de construire l'adresse ou aller si
+			// la condition n'est pas respectee.
+			case if_icmpeq:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.EQ,
+						i, endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
+				break;
+			case if_icmpge:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.GE,
+						i, endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
+				break;
+			case if_icmpgt:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.GT,
+						i, endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
+				break;
+			case if_icmple:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.LE,
+						i, endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
+				break;
+			case if_icmplt:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.LT,
+						i, endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
+				break;
+			case if_icmpne:
+				endOfCurrentBlock = (short) (i + getIndex(code[++i], code[++i]));
+				currentInstruction.addInstruction(currentPosition, createConditionalBranching(ConditionalOperator.NE,
+						i, endOfCurrentBlock, operandStack.pop(), operandStack.pop()));
 				break;
 
 			// Boucle conditionelle
@@ -184,6 +227,87 @@ public class OpCodeInterpreter {
 				break;
 			case istore_3:
 				tmpVarName = getVariableName(3, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+
+			case lstore_0:
+				tmpVarName = getVariableName(0, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case lstore_1:
+				tmpVarName = getVariableName(1, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case lstore_2:
+				tmpVarName = getVariableName(2, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case lstore_3:
+				tmpVarName = getVariableName(3, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case lstore:
+				tmpIndex = getUnsignedValue(code[++i]);
+				tmpVarName = getVariableName(tmpIndex, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+
+			case fstore_0:
+				tmpVarName = getVariableName(0, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case fstore_1:
+				tmpVarName = getVariableName(1, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case fstore_2:
+				tmpVarName = getVariableName(2, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case fstore_3:
+				tmpVarName = getVariableName(3, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case fstore:
+				tmpIndex = getUnsignedValue(code[++i]);
+				tmpVarName = getVariableName(tmpIndex, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+
+			case dstore_0:
+				tmpVarName = getVariableName(0, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case dstore_1:
+				tmpVarName = getVariableName(1, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case dstore_2:
+				tmpVarName = getVariableName(2, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case dstore_3:
+				tmpVarName = getVariableName(3, localVariable);
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						tmpVarName, operandStack.pop()));
+				break;
+			case dstore:
+				tmpIndex = getUnsignedValue(code[++i]);
+				tmpVarName = getVariableName(tmpIndex, localVariable);
 				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
 						tmpVarName, operandStack.pop()));
 				break;
@@ -245,6 +369,58 @@ public class OpCodeInterpreter {
 				tmpIndex = getUnsignedValue(code[++i]);
 				operandStack.push(localVariable.get(tmpIndex));
 				break;
+
+			case lload_0:
+				operandStack.push(localVariable.get(0));
+				break;
+			case lload_1:
+				operandStack.push(localVariable.get(1));
+				break;
+			case lload_2:
+				operandStack.push(localVariable.get(2));
+				break;
+			case lload_3:
+				operandStack.push(localVariable.get(3));
+				break;
+			case lload:
+				tmpIndex = getUnsignedValue(code[++i]);
+				operandStack.push(localVariable.get(tmpIndex));
+				break;
+
+			case fload_0:
+				operandStack.push(localVariable.get(0));
+				break;
+			case fload_1:
+				operandStack.push(localVariable.get(1));
+				break;
+			case fload_2:
+				operandStack.push(localVariable.get(2));
+				break;
+			case fload_3:
+				operandStack.push(localVariable.get(3));
+				break;
+			case fload:
+				tmpIndex = getUnsignedValue(code[++i]);
+				operandStack.push(localVariable.get(tmpIndex));
+				break;
+
+			case dload_0:
+				operandStack.push(localVariable.get(0));
+				break;
+			case dload_1:
+				operandStack.push(localVariable.get(1));
+				break;
+			case dload_2:
+				operandStack.push(localVariable.get(2));
+				break;
+			case dload_3:
+				operandStack.push(localVariable.get(3));
+				break;
+			case dload:
+				tmpIndex = getUnsignedValue(code[++i]);
+				operandStack.push(localVariable.get(tmpIndex));
+				break;
+
 			case aload_0:
 				operandStack.push(localVariable.get(0));
 				break;
@@ -308,6 +484,12 @@ public class OpCodeInterpreter {
 			case dconst_1:
 				operandStack.push(new Constant("double", "1.0d"));
 				break;
+			case lconst_0:
+				operandStack.push(new Constant("long", "0l"));
+				break;
+			case lconst_1:
+				operandStack.push(new Constant("long", "1l"));
+				break;
 
 			// Ajout d'un field static dans la stack
 			case getstatic:
@@ -318,6 +500,15 @@ public class OpCodeInterpreter {
 				// FIXME on recupere la class du constantpool
 				operandStack.push(new ObjectReference(null, ClassFileUtils.decodeStaticFieldClass(methodInfo
 						.getReferentClassFile(), (short) tmpIndex), new TypeDefinedByString("FIXME")));
+				break;
+
+			case putstatic:
+				constantField = (ConstantField) constants[getIndex(code[++i], code[++i]) - 1];
+				constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantNameType.getNameIndex()),
+						operandStack.pop()));
+
 				break;
 
 			// Ajout d'une constante du constant pool dans la stack
@@ -362,10 +553,10 @@ public class OpCodeInterpreter {
 				}
 
 				if (returnType.getDescriptorType() != DescriptorType.VOID) {
-					// S'il y a un retour alors c'est un operand, le r�sultat
+					// S'il y a un retour alors c'est un operand, le resultat
 					// est stocke dans la stack (c'est une
 					// autre
-					// instruction qui contient le r�sultat de la m�thode)
+					// instruction qui contient le resultat de la methode)
 					operandStack
 							.push(new SimpleInvocationOperandResult(new StaticMethodInvocationInstruction(
 									currentPosition, "TODO-CLASSNAME", tmpMethodName, returnType.getDescriptorType(),
@@ -401,10 +592,10 @@ public class OpCodeInterpreter {
 				}
 
 				if (returnType.getDescriptorType() != DescriptorType.VOID) {
-					// S'il y a un retour alors c'est un operand, le r�sultat
+					// S'il y a un retour alors c'est un operand, le resultat
 					// est stocke dans la stack (c'est une
 					// autre
-					// instruction qui contient le r�sultat de la m�thode)
+					// instruction qui contient le resultat de la methode)
 					operandStack.push(new SimpleInvocationOperandResult(new InstanceMethodInvocationInstruction(
 							currentPosition, operandStack.pop(), tmpMethodName, returnType.getDescriptorType(),
 							operands)));
@@ -431,11 +622,22 @@ public class OpCodeInterpreter {
 						.parseDescriptor(ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantClass
 								.getNameConstantIndex())), operandStack.pop()));
 				break;
-
+			case multianewarray:
+				tmpIndex = getIndex(code[++i], code[++i]);
+				constantClass = (ConstantClass) constants[tmpIndex - 1];
+				dimension = getUnsignedValue(code[++i]);
+				operandArray = new Operand[dimension];
+				for (int j = 0; j < dimension; j++) {
+					operandArray[j] = operandStack.pop();
+				}
+				operandStack.push(new ConstantArrayReference(ArrayType.T_REF, ClassFileUtils
+						.parseDescriptor(ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantClass
+								.getNameConstantIndex())), operandArray));
+				break;
 			case arraylength:
-				// Appel � l'instruction java length sur un tableau
+				// Appel l'instruction java length sur un tableau
 				operandStack.pop();
-				// FIXME On push une primitive de type entier r�cup�rer du
+				// FIXME On push une primitive de type entier recuperer du
 				// champs d'un object
 				operandStack.push(new Constant("int", "length"));
 				break;
@@ -445,12 +647,22 @@ public class OpCodeInterpreter {
 			case bastore:
 			case castore:
 			case aastore:
+			case sastore:
+			case lastore:
+			case fastore:
+			case dastore:
 				currentInstruction.addInstruction(currentPosition, new AssignationArrayInstruction(currentPosition,
 						operandStack.pop(), operandStack.pop(), (Array) operandStack.pop()));
 				break;
 
 			case iaload:
 			case baload:
+			case caload:
+			case aaload:
+			case saload:
+			case laload:
+			case faload:
+			case daload:
 				operandStack.push(new ArrayAccessInstruction(operandStack.pop(), (Array) operandStack.pop()));
 				break;
 
@@ -463,13 +675,25 @@ public class OpCodeInterpreter {
 				Descriptor desc = ClassFileUtils.parseDescriptor(ClassFileUtils.decodeUTF(methodInfo
 						.getReferentClassFile(), constantNameType.getDescritptorIndex()));
 				if (desc.isArray()) {
+					// FIXME get the dimension from descriptor...
 					operandStack.push(new ArrayReference(operandStack.pop(), ClassFileUtils.decodeUTF(methodInfo
-							.getReferentClassFile(), constantNameType.getNameIndex()), null));
+							.getReferentClassFile(), constantNameType.getNameIndex()), null, 1));
 				} else {
 					operandStack.push(new ObjectReference(operandStack.pop(), ClassFileUtils.decodeUTF(methodInfo
 							.getReferentClassFile(), constantNameType.getNameIndex()), null));
 				}
 
+				break;
+
+			case putfield:
+				constantField = (ConstantField) constants[getIndex(code[++i], code[++i]) - 1];
+				constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
+				currentInstruction.addInstruction(currentPosition, new AssignationInstruction(currentPosition,
+						ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantNameType.getNameIndex()),
+						operandStack.pop()));
+				// TODO Reference de l'objet à laquel le champ appartient... a
+				// prendre en compte dans les assignations.
+				operandStack.pop();
 				break;
 
 			// Return operation
@@ -647,6 +871,10 @@ public class OpCodeInterpreter {
 				var = new SimpleVariable(((SimpleInvocationOperandResult) operand).getReturnType(), "local" + tmpIndex);
 				localVariable.put(tmpIndex, var);
 				return var.getName();
+			} else if (operand instanceof SimpleVariable) {
+				var = new SimpleVariable(((SimpleVariable) operand).getType(), "local" + tmpIndex);
+				localVariable.put(tmpIndex, var);
+				return var.getName();
 			}
 		}
 		return var.getName();
@@ -671,7 +899,7 @@ public class OpCodeInterpreter {
 	 * @param c
 	 * @return
 	 * 
-	 *         Construit l'index � partir des 2 octets suivant une
+	 *         Construit l'index a partir des 2 octets suivant une
 	 *         instruction.... the unsigned branchbyte1 and branchbyte2 are used
 	 *         to construct a signed 16-bit offset, where the offset is
 	 *         calculated to be (branchbyte1 << 8) | branchbyte2.
@@ -696,9 +924,9 @@ public class OpCodeInterpreter {
 		return b & 0xFF;
 	}
 
-	private ConditionalBrancheInstruction createConditionalBranching(OpCodes opc, short beginIndex, short endIndex,
-			Operand operand1, Operand operand2) {
-		return new ConditionalBrancheInstruction(opc, beginIndex, endIndex, operand1, operand2);
+	private ConditionalBrancheInstruction createConditionalBranching(ConditionalOperator co, short beginIndex,
+			short endIndex, Operand operand1, Operand operand2) {
+		return new ConditionalBrancheInstruction(co, beginIndex, endIndex, operand1, operand2);
 	}
 
 	private UnconditionalBranching createUnconditionalBranching(short beginIndex, short endIndex) {

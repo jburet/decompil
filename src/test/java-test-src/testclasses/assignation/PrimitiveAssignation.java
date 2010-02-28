@@ -4,6 +4,9 @@ import testclasses.TestUtils;
 
 public class PrimitiveAssignation {
 
+	private int varint = 10;
+	private static int staticint = 10;
+
 	// From constant pool
 	public void constantIntAssignation() {
 		int a = 1;
@@ -102,5 +105,22 @@ public class PrimitiveAssignation {
 
 	public void methodCharAssignation(char var) {
 		char a = TestUtils.getChar();
+	}
+
+	// Field manipulation
+	public void readIntInstanceField() {
+		int i = varint;
+	}
+
+	public void writeIntInstanceField(int i) {
+		varint = i;
+	}
+
+	public void readIntStaticField() {
+		int i = staticint;
+	}
+
+	public void writeIntStaticField(int i) {
+		staticint = i;
 	}
 }

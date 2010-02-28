@@ -22,17 +22,21 @@ public class ConstantArrayReference implements Array {
 
 	private Type objectType;
 
-	private final Operand size;
+	private final Operand[] size;
 
 	private List<Operand> values;
 
-	public ConstantArrayReference(ArrayType arrayType, Operand size) {
+	private int dimension;
+
+	public ConstantArrayReference(ArrayType arrayType, Operand... size) {
 		this.arrayType = arrayType;
+		this.dimension = size.length;
 		this.size = size;
 	}
 
-	public ConstantArrayReference(ArrayType arrayType, Type objectType, Operand size) {
+	public ConstantArrayReference(ArrayType arrayType, Type objectType, Operand... size) {
 		this.arrayType = arrayType;
+		this.dimension = size.length;
 		this.size = size;
 		this.objectType = objectType;
 	}
@@ -46,7 +50,7 @@ public class ConstantArrayReference implements Array {
 		return arrayType;
 	}
 
-	public Operand getSize() {
+	public Operand[] getSize() {
 		return size;
 	}
 
@@ -67,6 +71,16 @@ public class ConstantArrayReference implements Array {
 		} else {
 			this.values.add(obj);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see model.code.operand.Array#getDimension()
+	 */
+	@Override
+	public int getDimension() {
+		return this.dimension;
 	}
 
 }

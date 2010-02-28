@@ -37,4 +37,15 @@ public class ArrayRefInvocationOperandResult extends InvocationOperandResult imp
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see model.code.operand.Array#getDimension()
+	 */
+	@Override
+	public int getDimension() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
 }

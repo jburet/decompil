@@ -128,6 +128,7 @@ public class TestArrayManipulation {
 	public void testGetValueOnShortArray() {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[12]);
+		jrv.visitMethodInstruction(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof ReturnInstruction);
 		ReturnInstruction ri = (ReturnInstruction) mi.getInstructionsMap().firstEntry().getValue();
 		ri.getOperand();

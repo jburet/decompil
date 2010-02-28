@@ -24,14 +24,12 @@ public class ConditionalBrancheInstruction extends Instruction {
 
 	private ConditionalOperation condition;
 
-	public ConditionalBrancheInstruction(OpCodes opc, short currentIndex,
-			short branchIndex, Operand operand1, Operand operand2) {
+	public ConditionalBrancheInstruction(ConditionalOperator co, short currentIndex, short branchIndex,
+			Operand operand1, Operand operand2) {
 		super(currentIndex);
-		this.condition = new ConditionalOperation(operand1, operand2,
-				ConditionalOperator.EQ);
+		this.condition = new ConditionalOperation(operand1, operand2, co);
 		this.currentIndex = currentIndex;
 		this.branchIndex = branchIndex;
-		this.opc = opc;
 	}
 
 	@Override

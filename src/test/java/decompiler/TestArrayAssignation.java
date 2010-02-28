@@ -4,9 +4,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import interpreter.impl.ByteCodeReader;
 import interpreter.impl.OpCodeInterpreter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import model.classes.ClassFile;
 import model.code.instruction.AssignationArrayInstruction;
 import model.code.instruction.AssignationInstruction;
+import model.code.instruction.Instruction;
 import model.code.instruction.MethodInstruction;
 import model.code.operand.Array;
 import model.code.operand.impl.ConstantArrayReference;
@@ -43,9 +48,11 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[2]);
 		assertNotNull(mi);
-		jrv.visitMethodInstruction(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationArrayInstruction);
-		AssignationArrayInstruction ai = (AssignationArrayInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(1);
 		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
@@ -64,9 +71,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[4]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -84,9 +96,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[6]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -104,9 +121,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[8]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -124,9 +146,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[10]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -144,9 +171,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[12]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -154,9 +186,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[13]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -170,13 +207,18 @@ public class TestArrayAssignation {
 	}
 
 	@Test
-	public void testNewFLoatConstantArray() {
+	public void testNewFloatConstantArray() {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[15]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -194,9 +236,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[17]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -214,9 +261,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[19]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -234,9 +286,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[21]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -244,9 +301,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[22]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -264,9 +326,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[24]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 	@Test
@@ -274,9 +341,14 @@ public class TestArrayAssignation {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[25]);
 		assertNotNull(mi);
-		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
-		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof Array);
+		List<Instruction> ins = new ArrayList<Instruction>(mi.getInstructionsMap().values());
+		assertTrue(ins.get(0) instanceof AssignationArrayInstruction);
+		AssignationArrayInstruction aai = (AssignationArrayInstruction) ins.get(0);
+		assertTrue(ins.get(1) instanceof AssignationArrayInstruction);
+		aai = (AssignationArrayInstruction) ins.get(1);
+		assertTrue(ins.get(2) instanceof AssignationInstruction);
+		AssignationInstruction ai = (AssignationInstruction) ins.get(2);
+		assertTrue(ai.getValue() instanceof ConstantArrayReference);
 	}
 
 }
