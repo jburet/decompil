@@ -16,23 +16,24 @@
 
 package model.code.operand.impl;
 
-import visitor.Visitor;
 import model.code.operand.Operand;
+import model.constant.Type;
+import visitor.Visitor;
 
 public class Constant implements Operand {
-	private String type;
+	private Type type;
 	private String value;
 
-	public Constant(String type, String value) {
+	public Constant(Type type, String value) {
 		this.type = type;
 		this.value = value;
 	}
 
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 
@@ -49,7 +50,4 @@ public class Constant implements Operand {
 		visitor.visitConstant(this);
 	}
 
-	public boolean isString() {
-		return "java.lang.String".equals(type);
-	}
 }

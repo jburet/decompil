@@ -23,7 +23,7 @@ package testclasses.branches;
  * @author jburet
  * 
  */
-public class UnconditionalBranche {
+public class NonConditionalBranche {
 
 	public void boucleFor() {
 		int j = 0;

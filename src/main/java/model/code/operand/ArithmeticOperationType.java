@@ -17,16 +17,25 @@
 package model.code.operand;
 
 public enum ArithmeticOperationType {
-	
-	PLUS("+"), MINUS("-");
-	
+
+	PLUS("+"),
+	MINUS("-"),
+	MUL("*"),
+	DIV("/"),
+	REM("%"),
+	SHL("<<"),
+	SHR(">>"),
+	AND("$"),
+	OR("|"),
+	XOR("^");
+
 	private String sign;
-	
-	private ArithmeticOperationType(String sign){
+
+	private ArithmeticOperationType(String sign) {
 		this.sign = sign;
 	}
-	
-	public String getSign(){
+
+	public String getSign() {
 		return this.sign;
 	}
 }

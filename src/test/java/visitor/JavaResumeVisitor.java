@@ -75,11 +75,7 @@ public class JavaResumeVisitor implements Visitor {
 
 	@Override
 	public void visitConstant(Constant constant) {
-		if (constant.isString()) {
-			System.out.print("\"" + constant.getValue() + "\"");
-		} else {
-			System.out.print(constant.getValue());
-		}
+		System.out.print(constant.getValue());
 	}
 
 	@Override

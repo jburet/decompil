@@ -33,8 +33,6 @@ import model.code.operand.impl.ArithmeticOperation;
 import model.code.operand.impl.ArrayAccessInstruction;
 import model.code.operand.impl.ConditionalOperation;
 import model.code.operand.impl.Constant;
-import model.code.operand.impl.InvocationOperandResult;
-import model.code.operand.impl.SimpleVariable;
 
 public interface Visitor {
 
