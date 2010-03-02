@@ -1,9 +1,9 @@
 # Can ignore specific files
-.DS_Store
-.classpath
-.project
-target
-.settings
+**/.DS_Store
+**/.classpath
+**/.project
+**/target
+**/.settings
 
 # Use wildcards as well
 #*~
