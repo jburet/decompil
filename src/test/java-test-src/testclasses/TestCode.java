@@ -21,7 +21,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import model.code.OpCodes;
+import jdecomp.core.model.code.OpCodes;
+
 
 public class TestCode {
 
