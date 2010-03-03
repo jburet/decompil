@@ -31,6 +31,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.ZestStyles;
 
 public class FlowGraphVisitor implements Visitor {
 
@@ -115,7 +116,8 @@ public class FlowGraphVisitor implements Visitor {
 		for (Entry<Short, Set<Short>> connections : graphConnection.entrySet()) {
 			short currentIdx = connections.getKey();
 			for (short destIdx : connections.getValue()) {
-				new GraphConnection(graph, SWT.NONE, graphNodes.get(currentIdx), graphNodes.get(getRealIndx(destIdx)));
+				new GraphConnection(graph, ZestStyles.CONNECTIONS_DIRECTED, graphNodes.get(currentIdx), graphNodes
+						.get(getRealIndx(destIdx)));
 			}
 		}
 	}
@@ -163,7 +165,8 @@ public class FlowGraphVisitor implements Visitor {
 	@Override
 	public void visitUnconditionalBranching(UnconditionalBranching arg0) {
 		createNode(currentPos, arg0);
-
+		noConnection = true;
+		addConnection(currentPos, (short) arg0.getBranchIndex());
 	}
 
 	@Override
