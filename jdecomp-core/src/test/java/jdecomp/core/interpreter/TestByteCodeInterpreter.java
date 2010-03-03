@@ -16,33 +16,28 @@
 
 package jdecomp.core.interpreter;
 
-import jdecomp.core.interpreter.InterpreterException;
 import jdecomp.core.interpreter.impl.ByteCodeReader;
 import jdecomp.core.model.classes.ClassFile;
 import jdecomp.core.utils.debug.ClassFilePrinter;
 
-
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 public class TestByteCodeInterpreter {
-	
+
 	// Tested class
 	private ByteCodeReader bci;
 	// Utils
 	private ClassFilePrinter cfp;
-	
+
 	@Before
-	public void setup(){
+	public void setup() {
 		bci = new ByteCodeReader();
 		cfp = new ClassFilePrinter();
 	}
-	
-	
-	@Test(expected=InterpreterException.class)
-	public void parseFichierMauvaisMagic(){
-		ClassFile cf = bci.readClassFile("src/test/classes/test/main/BasicMauvaisMagic.class");	
+
+	@Test(expected = InterpreterException.class)
+	public void parseFichierMauvaisMagic() {
+		ClassFile cf = bci.readClassFile("src/test/classes/test/main/BasicMauvaisMagic.class");
 	}
 }

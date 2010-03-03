@@ -32,7 +32,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="jdecomp.visualisation.application"
-            name="Jdecomp Visualisation">
+            name="JDecomp">
          <property
                name="windowImages"
                value="icons/alt_window_16.gif,icons/alt_window_32.gif">

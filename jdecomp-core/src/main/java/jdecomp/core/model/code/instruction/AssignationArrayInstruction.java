@@ -16,21 +16,23 @@
 
 package jdecomp.core.model.code.instruction;
 
-import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.Operand;
+import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
 import jdecomp.core.visitor.Visitor;
 
 public class AssignationArrayInstruction extends Instruction {
 
-	private Array arrayRef;
+	private Operand arrayRef;
 	private Operand value;
 	private Operand index;
 
-	public AssignationArrayInstruction(short currentIndex, Operand value, Operand index, Array objectReference) {
+	public AssignationArrayInstruction(short currentIndex, Operand value, Operand index, Operand objectReference) {
 		super(currentIndex);
 		this.arrayRef = objectReference;
 		this.value = value;
-		this.arrayRef.addValue(index, value);
+		if (arrayRef instanceof ConstantArrayReference) {
+			((ConstantArrayReference) this.arrayRef).addValue(index, value);
+		}
 		this.index = index;
 	}
 
@@ -43,7 +45,7 @@ public class AssignationArrayInstruction extends Instruction {
 		return index;
 	}
 
-	public Array getArrayRef() {
+	public Operand getArrayRef() {
 		return arrayRef;
 	}
 

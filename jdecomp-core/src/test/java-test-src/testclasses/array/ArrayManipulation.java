@@ -98,4 +98,49 @@ public class ArrayManipulation {
 	public Object getValueOnObjectArray() {
 		return objectArray[0];
 	}
+
+	public void assignValueOnBooleanVarArray() {
+		boolean[] array = new boolean[1];
+		array[0] = true;
+	}
+
+	public void assignValueOnByteVarArray() {
+		byte[] array = new byte[1];
+		array[0] = 1;
+	}
+
+	public void assignValueOnShortVarArray() {
+		short[] array = new short[1];
+		array[0] = 1;
+	}
+
+	public void assignValueOnIntVarArray() {
+		int[] array = new int[1];
+		array[0] = 1;
+	}
+
+	public void assignValueOnLongVarArray() {
+		long[] array = new long[1];
+		array[0] = 1l;
+	}
+
+	public void assignValueOnCharVarArray() {
+		char[] array = new char[1];
+		array[0] = 'r';
+	}
+
+	public void assignValueOnFloatVarArray() {
+		float[] array = new float[1];
+		array[0] = 1.0f;
+	}
+
+	public void assignValueOnDoubleVarArray() {
+		double[] array = new double[1];
+		array[0] = 1.5d;
+	}
+
+	public void assignValueOnObjectVarArray() {
+		Object[] array = new Object[1];
+		array[0] = new Object();
+	}
 }

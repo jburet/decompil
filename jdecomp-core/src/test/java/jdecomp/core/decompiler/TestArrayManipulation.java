@@ -17,17 +17,21 @@
 package jdecomp.core.decompiler;
 
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jdecomp.core.interpreter.impl.ByteCodeReader;
 import jdecomp.core.interpreter.impl.OpCodeInterpreter;
 import jdecomp.core.model.classes.ClassFile;
 import jdecomp.core.model.code.instruction.AssignationArrayInstruction;
+import jdecomp.core.model.code.instruction.AssignationInstruction;
 import jdecomp.core.model.code.instruction.MethodInstruction;
 import jdecomp.core.model.code.instruction.ReturnInstruction;
 import jdecomp.core.visitor.JavaResumeVisitor;
 
 import org.junit.Before;
 import org.junit.Test;
-
 
 public class TestArrayManipulation {
 	private ByteCodeReader bci;
@@ -202,6 +206,97 @@ public class TestArrayManipulation {
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof ReturnInstruction);
 		ReturnInstruction ri = (ReturnInstruction) mi.getInstructionsMap().firstEntry().getValue();
 		ri.getOperand();
+	}
+
+	@Test
+	public void testAssignValueOnBooleanVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[19]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+		assertTrue(mi.getInstructionsMap().get(index.get(1)) instanceof AssignationArrayInstruction);
+		assertTrue(mi.getInstructionsMap().get(index.get(2)) instanceof ReturnInstruction);
+	}
+
+	@Test
+	public void testAssignValueOnByteVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[20]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnShortVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[21]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnIntVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[22]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnLongVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[23]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnCharVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[24]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnFloatVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[25]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnDoubleVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[26]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
+	}
+
+	@Test
+	public void testAssignValueOnObjectVarArray() {
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/array/ArrayManipulation.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[27]);
+		List<Short> index = new ArrayList<Short>(mi.getInstructionsMap().keySet());
+		assertTrue(mi.getInstructionsMap().get(index.get(0)) instanceof AssignationInstruction);
+		AssignationInstruction aai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
+
 	}
 
 }

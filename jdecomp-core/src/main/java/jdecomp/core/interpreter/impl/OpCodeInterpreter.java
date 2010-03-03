@@ -16,7 +16,6 @@
 
 package jdecomp.core.interpreter.impl;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -69,7 +68,6 @@ import jdecomp.core.model.constant.ClassReferenceType;
 import jdecomp.core.model.constant.DescriptorType;
 import jdecomp.core.model.constant.Type;
 import jdecomp.core.model.method.MethodInfo;
-
 
 /**
  * @author jburet
@@ -836,7 +834,7 @@ public class OpCodeInterpreter {
 		case fastore:
 		case dastore:
 			currentInstruction.addInstruction(currentPosition, new AssignationArrayInstruction(currentPosition,
-					operandStack.pop(), operandStack.pop(), (Array) operandStack.pop()));
+					operandStack.pop(), operandStack.pop(), operandStack.pop()));
 			break;
 
 		case iaload:
