@@ -87,6 +87,7 @@
 
 	<modules>
 		<module>jdecomp-core</module>
+		<module>jdecomp-plugin-complexity</module>
 	</modules>
 
 </project>

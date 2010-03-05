@@ -16,17 +16,16 @@
 
 package jdecomp.core.model.code.operand.impl;
 
-import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.visitor.Visitor;
 
 public class ArrayAccessInstruction implements Operand {
 
-	private Array arrayReference;
+	private Operand arrayReference;
 
 	private Operand index;
 
-	public ArrayAccessInstruction(Operand index, Array arrayReference) {
+	public ArrayAccessInstruction(Operand index, Operand arrayReference) {
 		this.arrayReference = arrayReference;
 		this.index = index;
 	}
@@ -36,7 +35,7 @@ public class ArrayAccessInstruction implements Operand {
 		visitor.visitArrayAccessInstruction(this);
 	}
 
-	public Array getArrayReference() {
+	public Operand getArrayReference() {
 		return arrayReference;
 	}
 

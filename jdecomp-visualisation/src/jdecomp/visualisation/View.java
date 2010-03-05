@@ -24,8 +24,9 @@ public class View extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		ClassFile cf = bci.readClassFile("d:/Test.class");
-		MethodInstruction mi = cd.constructTree(cf.getMethods()[1]);
+		ClassFile cf = bci
+				.readClassFile("/Users/jburet/Documents/workspace/jdecomp-app/jdecomp-core/target/classes/jdecomp/core/generator/impl/ClassGenerator.class");
+		MethodInstruction mi = cd.constructTree(cf.getMethods()[5]);
 		graph = new Graph(parent, SWT.NONE);
 		visitor = new FlowGraphVisitor(graph);
 		visitor.visitMethodInstruction(mi);

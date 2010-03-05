@@ -1,10 +1,10 @@
 # Can ignore specific files
-**/.DS_Store
-**/.classpath
-**/.project
-**/target
-**/.settings
-
+.DS_Store
+.classpath
+.project
+target
+.settings
+bin
 # Use wildcards as well
 #*~
 #*.swp

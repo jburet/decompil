@@ -16,7 +16,6 @@
 
 package jdecomp.core.generator.impl;
 
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -38,15 +37,13 @@ import jdecomp.core.model.field.FieldInfo;
 import jdecomp.core.model.method.MethodAccessFlag;
 import jdecomp.core.model.method.MethodInfo;
 
-
 public class ClassGenerator {
 
 	private OpCodeInterpreter codeDecompiler = new OpCodeInterpreter();
 
-	public void generateSource(ClassFile classFile, Writer inWriter)
-			throws IOException {
+	public void generateSource(ClassFile classFile, Writer inWriter) throws IOException {
 		BufferedWriter writer = new BufferedWriter(inWriter);
-		// La d�claration de la class
+		// La declaration de la class
 		writePackageDeclaration(classFile, writer);
 		// TODO Gestion d'un pool d'import
 		// TODO Annotation niveau classe...
@@ -57,9 +54,8 @@ public class ClassGenerator {
 		writer.flush();
 	}
 
-	private void writePackageDeclaration(ClassFile classFile,
-			BufferedWriter writer) throws IOException {
-		// On r�cup�re le nom de la classe au format pack/age/ClassInstance
+	private void writePackageDeclaration(ClassFile classFile, BufferedWriter writer) throws IOException {
+		// On recupere le nom de la classe au format package/ClassInstance
 		String thisClass = ClassFileUtils.decodeThisClass(classFile);
 		StringTokenizer st = new StringTokenizer(thisClass, "/", false);
 		int thisClassNbToken = st.countTokens();
@@ -80,45 +76,36 @@ public class ClassGenerator {
 		writer.newLine();
 	}
 
-	private void writeClassDeclaration(ClassFile classFile,
-			BufferedWriter writer) throws IOException {
+	private void writeClassDeclaration(ClassFile classFile, BufferedWriter writer) throws IOException {
 
 		// On construis les access et le type (class, enum, annotation,
 		// interface)
-		ClassAccessFlag[] flag = AccessFlagParser.getClassAccessFlag(classFile
-				.getAccessFlags());
+		ClassAccessFlag[] flag = AccessFlagParser.getClassAccessFlag(classFile.getAccessFlags());
 		StringBuffer sb = new StringBuffer();
-		if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_PUBLIC)) {
+		if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_PUBLIC)) {
 			sb.append(Keyword.PUBLIC_KW);
 			sb.append(" ");
 		}
-		if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_FINAL)) {
+		if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_FINAL)) {
 			sb.append(Keyword.FINAL_KW);
 			sb.append(" ");
 		}
-		if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_ABSTRACT)) {
+		if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_ABSTRACT)) {
 			sb.append(Keyword.ABSTRACT_KW);
 			sb.append(" ");
 		}
-		// Faire un petit commentaire quand synthetic (g�n�rer par le
+		// Faire un petit commentaire quand synthetic (generer par le
 		// compililateur)
-		if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_SYNTHETIC)) {
+		if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_SYNTHETIC)) {
 
 		}
-		if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_ENUM)) {
+		if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_ENUM)) {
 			sb.append(Keyword.ENUM_KW);
 			sb.append(" ");
-		} else if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_ANNOTATION)) {
+		} else if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_ANNOTATION)) {
 			sb.append(Keyword.ANNOTATION_KW);
 			sb.append(" ");
-		} else if (ClassFileUtils.classAccessFlagContains(flag,
-				ClassAccessFlag.ACC_INTERFACE)) {
+		} else if (ClassFileUtils.classAccessFlagContains(flag, ClassAccessFlag.ACC_INTERFACE)) {
 			sb.append(Keyword.INTERFACE_KW);
 			sb.append(" ");
 		} else {
@@ -129,8 +116,7 @@ public class ClassGenerator {
 		sb.append(ClassFileUtils.getClassName(classFile));
 		// Extends
 		String superClass = ClassFileUtils.decodeSuperClass(classFile);
-		if (superClass != null && !superClass.isEmpty()
-				&& !superClass.equals(Keyword.CLASS_OBJECT)) {
+		if (superClass != null && !superClass.isEmpty() && !superClass.equals(Keyword.CLASS_OBJECT)) {
 			sb.append(" ");
 			sb.append(Keyword.EXTEND_KW);
 			sb.append(" ");
@@ -145,10 +131,8 @@ public class ClassGenerator {
 				if (i != 0) {
 					sb.append(", ");
 				}
-				sb.append(ClassFileUtils
-						.convertByteToJavaClassFormat(ClassFileUtils
-								.decodeConstant(classFile, classFile
-										.getInterfacesIndex()[i])));
+				sb.append(ClassFileUtils.convertByteToJavaClassFormat(ClassFileUtils.decodeConstant(classFile,
+						classFile.getInterfacesIndex()[i])));
 			}
 		}
 		sb.append("{");
@@ -156,8 +140,7 @@ public class ClassGenerator {
 		writer.newLine();
 	}
 
-	private void writeField(ClassFile classFile, BufferedWriter writer)
-			throws IOException {
+	private void writeField(ClassFile classFile, BufferedWriter writer) throws IOException {
 		FieldInfo field;
 		FieldAccessFlag[] flag;
 		StringBuffer sb;
@@ -168,70 +151,57 @@ public class ClassGenerator {
 			// TODO Instanciation � faire l� ou dans les constructeurs...
 			field = classFile.getFields()[i];
 			flag = AccessFlagParser.getFieldAccessFlag(field.getAccessFlag());
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_PRIVATE)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_PRIVATE)) {
 				sb.append(Keyword.PRIVATE_KW);
 				sb.append(" ");
-			} else if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_PROTECTED)) {
+			} else if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_PROTECTED)) {
 				sb.append(Keyword.PROTECTED_KW);
 				sb.append(" ");
-			} else if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_PUBLIC)) {
+			} else if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_PUBLIC)) {
 				sb.append(Keyword.PUBLIC_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_STATIC)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_STATIC)) {
 				sb.append(Keyword.STATIC_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_FINAL)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_FINAL)) {
 				sb.append(Keyword.FINAL_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_VOLATILE)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_VOLATILE)) {
 				sb.append(Keyword.VOLATILE_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_TRANSIENT)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_TRANSIENT)) {
 				sb.append(Keyword.TRANSIENT_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_ENUM)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_ENUM)) {
 
 			}
-			if (ClassFileUtils.fieldAccessFlagContains(flag,
-					FieldAccessFlag.ACC_SYNTHETIC)) {
+			if (ClassFileUtils.fieldAccessFlagContains(flag, FieldAccessFlag.ACC_SYNTHETIC)) {
 
 			}
 			// TYPE
 			// TODO Lire et g�rer les attributs de type signature...
-			fieldEncodedReturnType = ClassFileUtils.decodeUTF(classFile, field
-					.getDescriptorIndex());
-			sb.append(ClassFileUtils.parseDescriptor(fieldEncodedReturnType
-					.substring(0, fieldEncodedReturnType.length() - 1)));
+			fieldEncodedReturnType = ClassFileUtils.decodeUTF(classFile, field.getDescriptorIndex());
+			sb.append(ClassFileUtils.parseDescriptor(fieldEncodedReturnType.substring(0, fieldEncodedReturnType
+					.length() - 1)));
 
 			// NAME
 			sb.append(" ");
-			sb
-					.append(ClassFileUtils.decodeUTF(classFile, field
-							.getNameIndex()));
+			sb.append(ClassFileUtils.decodeUTF(classFile, field.getNameIndex()));
 
 			// Constant value...
-			// TODO lire et g�rer les attributs de type constantValue
+			// TODO lire et gerer les attributs de type constantValue
 			sb.append(";");
 			writer.write(sb.toString());
 			writer.newLine();
 		}
 	}
 
-	private void writeMethod(ClassFile classFile, BufferedWriter writer)
-			throws IOException {
+	private void writeMethod(ClassFile classFile, BufferedWriter writer) throws IOException {
 		MethodInfo mi;
 		MethodAccessFlag[] flags;
 		StringBuffer sb;
@@ -244,47 +214,37 @@ public class ClassGenerator {
 			sb = new StringBuffer();
 			mi = classFile.getMethods()[i];
 			methodName = ClassFileUtils.decodeUTF(classFile, mi.getNameIndex());
-			staticConstructorMethod = methodName
-					.equals(Keyword.STATIC_CONSTRUCTOR_METHOD_NAME);
-			constructorMethod = methodName
-					.equals(Keyword.CONSTRUCTOR_METHOD_NAME);
+			staticConstructorMethod = methodName.equals(Keyword.STATIC_CONSTRUCTOR_METHOD_NAME);
+			constructorMethod = methodName.equals(Keyword.CONSTRUCTOR_METHOD_NAME);
 			// Gestion des flag d'access
 			flags = AccessFlagParser.getMethodAccessFlag(mi.getAccessFlags());
-			if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_PUBLIC)) {
+			if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_PUBLIC)) {
 				sb.append(Keyword.PUBLIC_KW);
 				sb.append(" ");
-			} else if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_PROTECTED)) {
+			} else if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_PROTECTED)) {
 				sb.append(Keyword.PROTECTED_KW);
 				sb.append(" ");
-			} else if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_PRIVATE)) {
+			} else if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_PRIVATE)) {
 				sb.append(Keyword.PRIVATE_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_ABSTRACT)) {
+			if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_ABSTRACT)) {
 				sb.append(Keyword.ABSTRACT_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_STATIC)) {
+			if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_STATIC)) {
 				sb.append(Keyword.STATIC_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_FINAL)) {
+			if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_FINAL)) {
 				sb.append(Keyword.FINAL_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_NATIVE)) {
+			if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_NATIVE)) {
 				sb.append(Keyword.NATIVE_KW);
 				sb.append(" ");
 			}
-			if (ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_SYNCHRONIZED)) {
+			if (ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_SYNCHRONIZED)) {
 				sb.append(Keyword.SYNCHRONIZED_KW);
 				sb.append(" ");
 			}
@@ -321,8 +281,7 @@ public class ClassGenerator {
 				}
 				sb.append(")");
 			}
-			if (!ClassFileUtils.methodAccessFlagContains(flags,
-					MethodAccessFlag.ACC_ABSTRACT)) {
+			if (!ClassFileUtils.methodAccessFlagContains(flags, MethodAccessFlag.ACC_ABSTRACT)) {
 				sb.append("{");
 				sb.append(ClassFileUtils.NEWLINE);
 				sb.append(writeCode(mi));

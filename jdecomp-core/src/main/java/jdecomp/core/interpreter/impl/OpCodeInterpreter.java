@@ -50,7 +50,6 @@ import jdecomp.core.model.code.instruction.StaticMethodInvocationInstruction;
 import jdecomp.core.model.code.instruction.SwitchInstruction;
 import jdecomp.core.model.code.instruction.UnconditionalBranching;
 import jdecomp.core.model.code.operand.ArithmeticOperationType;
-import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.ArrayType;
 import jdecomp.core.model.code.operand.ConditionalOperator;
 import jdecomp.core.model.code.operand.ObjectReference;
@@ -845,7 +844,7 @@ public class OpCodeInterpreter {
 		case laload:
 		case faload:
 		case daload:
-			operandStack.push(new ArrayAccessInstruction(operandStack.pop(), (Array) operandStack.pop()));
+			operandStack.push(new ArrayAccessInstruction(operandStack.pop(), operandStack.pop()));
 			break;
 
 		// get a field

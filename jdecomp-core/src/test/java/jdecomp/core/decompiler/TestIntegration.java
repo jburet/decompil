@@ -10,6 +10,7 @@ import jdecomp.core.interpreter.impl.OpCodeInterpreter;
 import jdecomp.core.model.classes.ClassFile;
 import jdecomp.core.model.code.instruction.Instruction;
 import jdecomp.core.model.code.instruction.MethodInstruction;
+import jdecomp.core.visitor.JavaResumeVisitor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +18,13 @@ import org.junit.Test;
 public class TestIntegration {
 	private ByteCodeReader bci;
 	private OpCodeInterpreter cd;
+	private JavaResumeVisitor jrv;
 
 	@Before
 	public void setup() {
 		bci = new ByteCodeReader();
 		cd = new OpCodeInterpreter();
+		jrv = new JavaResumeVisitor();
 	}
 
 	@Test
@@ -32,5 +35,6 @@ public class TestIntegration {
 		List<Instruction> res = new ArrayList<Instruction>(mi.getInstructionsMap().values());
 		List<Short> ress = new ArrayList<Short>(mi.getInstructionsMap().keySet());
 		res.toString();
+		jrv.visitMethodInstruction(mi);
 	}
 }

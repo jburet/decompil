@@ -23,8 +23,10 @@ import jdecomp.core.model.code.operand.ObjectReference;
 import jdecomp.core.model.code.operand.Variable;
 import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
 import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
+import jdecomp.core.model.code.operand.impl.ArrayReference;
 import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
+import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
 import jdecomp.core.visitor.Visitor;
 
 import org.eclipse.swt.SWT;
@@ -41,6 +43,8 @@ public class FlowGraphVisitor implements Visitor {
 
 	private boolean noConnection = false;
 
+	private StringBuffer tmpInstruction = new StringBuffer();
+
 	Map<Short, GraphNode> graphNodes = new HashMap<Short, GraphNode>();
 	Map<Short, Set<Short>> graphConnection = new HashMap<Short, Set<Short>>();
 
@@ -49,52 +53,105 @@ public class FlowGraphVisitor implements Visitor {
 	}
 
 	@Override
-	public void visitArithmethicOperation(ArithmeticOperation arg0) {
-
+	public void visitArithmethicOperation(ArithmeticOperation arithmeticOperation) {
+		arithmeticOperation.getOp1().accept(this);
+		tmpInstruction.append(arithmeticOperation.getType().getSign());
+		arithmeticOperation.getOp2().accept(this);
 	}
 
 	@Override
-	public void visitArrayAccessInstruction(ArrayAccessInstruction arg0) {
-
+	public void visitArrayAccessInstruction(ArrayAccessInstruction arrayAccessInstruction) {
+		arrayAccessInstruction.getArrayReference().accept(this);
+		tmpInstruction.append("[");
+		arrayAccessInstruction.getIndex().accept(this);
+		tmpInstruction.append("]");
 	}
 
 	@Override
-	public void visitArrayAssignation(AssignationArrayInstruction arg0) {
-		createNode(currentPos, arg0);
+	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
+
+		assignationArrayInstruction.getArrayRef().accept(this);
+		tmpInstruction.append("[");
+		assignationArrayInstruction.getIndex().accept(this);
+		tmpInstruction.append("] = ");
+		assignationArrayInstruction.getValue().accept(this);
+		tmpInstruction.append(";");
+
+		createNode(currentPos, assignationArrayInstruction);
 	}
 
 	@Override
-	public void visitArrayReference(Array arg0) {
-
+	public void visitArrayReference(Array arrayReference) {
+		if (arrayReference instanceof ArrayReference && ((ArrayReference) arrayReference).getName() != null) {
+			tmpInstruction.append(((ArrayReference) arrayReference).getName());
+		} else if (arrayReference instanceof ConstantArrayReference) {
+			// TODO Sinon on affiche les assignations stockes
+			tmpInstruction.append("new ");
+			tmpInstruction.append(arrayReference.getObjectType());
+			tmpInstruction.append("[] ");
+			if (((ConstantArrayReference) arrayReference).getValues() != null) {
+				tmpInstruction.append("{");
+				// FIXME On doit utilise la taille de l'array reference et non
+				// pas
+				// la taille de la liste
+				for (int i = 0; i < ((ConstantArrayReference) arrayReference).getValues().size(); i++) {
+					if (((ConstantArrayReference) arrayReference).getValues().get(i) != null) {
+						((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
+					} else {
+						// FIXME (null ou la valeur par defaut si type primitif
+						tmpInstruction.append("null ");
+					}
+					if (((ConstantArrayReference) arrayReference).getValues().size() - i > 1) {
+						tmpInstruction.append(", ");
+					}
+				}
+				tmpInstruction.append("}");
+			}
+		}
 	}
 
 	@Override
-	public void visitAssignation(AssignationInstruction arg0) {
-		createNode(currentPos, arg0);
-
+	public void visitAssignation(AssignationInstruction assignationInstruction) {
+		tmpInstruction.append(assignationInstruction.getVarName() + " = ");
+		assignationInstruction.getValue().accept(this);
+		tmpInstruction.append(";");
+		createNode(currentPos, assignationInstruction);
 	}
 
 	@Override
-	public void visitConditionalBranching(ConditionalBrancheInstruction arg0) {
-		createNode(currentPos, arg0);
+	public void visitConditionalBranching(ConditionalBrancheInstruction conditionalBranching) {
+		tmpInstruction.append("if(");
+		conditionalBranching.getCondition().accept(this);
+		tmpInstruction.append(") goto : " + conditionalBranching.getBranchIndex());
+		createNode(currentPos, conditionalBranching);
 		// Ajout d'une autre connection
-		addConnection(currentPos, (short) arg0.getBranchIndex());
+		addConnection(currentPos, (short) conditionalBranching.getBranchIndex());
 	}
 
 	@Override
-	public void visitConditionalOperation(ConditionalOperation arg0) {
-
+	public void visitConditionalOperation(ConditionalOperation conditionalBlock) {
+		conditionalBlock.getOperand1().accept(this);
+		tmpInstruction.append(" " + conditionalBlock.getCo().getOp() + " ");
+		conditionalBlock.getOperand2().accept(this);
 	}
 
 	@Override
-	public void visitConstant(Constant arg0) {
-
+	public void visitConstant(Constant constant) {
+		tmpInstruction.append(constant.getValue());
 	}
 
 	@Override
-	public void visitInstanceMethodInvocation(InstanceMethodInvocationInstruction arg0) {
-		createNode(currentPos, arg0);
-
+	public void visitInstanceMethodInvocation(InstanceMethodInvocationInstruction instanceMethodInvocationInstruction) {
+		instanceMethodInvocationInstruction.getIntance().accept(this);
+		tmpInstruction.append("." + instanceMethodInvocationInstruction.getMethodName() + "(");
+		for (int i = instanceMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
+			instanceMethodInvocationInstruction.getArgs()[i].accept(this);
+			if (i > 0) {
+				tmpInstruction.append(", ");
+			}
+		}
+		tmpInstruction.append(");");
+		createNode(currentPos, instanceMethodInvocationInstruction);
 	}
 
 	@Override
@@ -134,49 +191,74 @@ public class FlowGraphVisitor implements Visitor {
 	}
 
 	@Override
-	public void visitObjectReference(ObjectReference arg0) {
-
+	public void visitObjectReference(ObjectReference objectReference) {
+		tmpInstruction.append(objectReference.getName());
 	}
 
 	@Override
-	public void visitReturn(ReturnInstruction arg0) {
-		createNode(currentPos, arg0);
+	public void visitReturn(ReturnInstruction returnInstruction) {
+		tmpInstruction.append("return ");
+		if (returnInstruction.getOperand() != null) {
+			returnInstruction.getOperand().accept(this);
+		}
+		tmpInstruction.append(";");
+		createNode(currentPos, returnInstruction);
 		noConnection = true;
 	}
 
 	@Override
-	public void visitStatementInstruction(StatementInstruction arg0) {
-		createNode(currentPos, arg0);
+	public void visitStatementInstruction(StatementInstruction statementInstruction) {
+		tmpInstruction.append(statementInstruction.getOpCode().name());
+		createNode(currentPos, statementInstruction);
 
 	}
 
 	@Override
-	public void visitStaticMethodInvocation(StaticMethodInvocationInstruction arg0) {
-		createNode(currentPos, arg0);
+	public void visitStaticMethodInvocation(StaticMethodInvocationInstruction staticMethodInvocationInstruction) {
+		tmpInstruction.append(staticMethodInvocationInstruction.getClassName() + "."
+				+ staticMethodInvocationInstruction.getMethodName() + "(");
+		for (int i = staticMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
+			staticMethodInvocationInstruction.getArgs()[i].accept(this);
+			if (i > 0) {
+				tmpInstruction.append(", ");
+			}
+		}
+		tmpInstruction.append(");");
+		createNode(currentPos, staticMethodInvocationInstruction);
 
 	}
 
 	@Override
-	public void visitSwitch(SwitchInstruction arg0) {
-		createNode(currentPos, arg0);
-
+	public void visitSwitch(SwitchInstruction switchInstruction) {
+		tmpInstruction.append("switch(");
+		switchInstruction.getIndex().accept(this);
+		tmpInstruction.append(") {");
+		for (int i = 0; i < switchInstruction.getMatch().length; i++) {
+			tmpInstruction.append("case " + switchInstruction.getMatch()[i] + ": ");
+			tmpInstruction.append("goto : " + switchInstruction.getJumpOffset()[i] + ";");
+		}
+		tmpInstruction.append("default: ");
+		tmpInstruction.append("goto : " + switchInstruction.getDefaultIndex() + ";");
+		createNode(currentPos, switchInstruction);
 	}
 
 	@Override
-	public void visitUnconditionalBranching(UnconditionalBranching arg0) {
-		createNode(currentPos, arg0);
+	public void visitUnconditionalBranching(UnconditionalBranching unconditionalBranching) {
+		tmpInstruction.append("goto : " + unconditionalBranching.getBranchIndex());
+		createNode(currentPos, unconditionalBranching);
 		noConnection = true;
-		addConnection(currentPos, (short) arg0.getBranchIndex());
+		addConnection(currentPos, (short) unconditionalBranching.getBranchIndex());
 	}
 
 	@Override
-	public void visitVariable(Variable arg0) {
-
+	public void visitVariable(Variable variable) {
+		tmpInstruction.append(variable.getName());
 	}
 
 	private void createNode(short currentPos, Instruction ins) {
 		graphNodes.put(currentPos, new GraphNode(graph, SWT.NONE, ins.getCurrentIndex() + " : "
-				+ ins.getClass().getSimpleName()));
+				+ tmpInstruction.toString()));
+		tmpInstruction = new StringBuffer();
 	}
 
 	private void addConnection(short precPos, Short currentPos) {

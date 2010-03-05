@@ -38,8 +38,6 @@ import jdecomp.core.model.code.operand.impl.ArrayReference;
 import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
 import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
-import jdecomp.core.visitor.Visitor;
-
 
 public class JavaResumeVisitor implements Visitor {
 
@@ -143,21 +141,24 @@ public class JavaResumeVisitor implements Visitor {
 			System.out.print("new ");
 			System.out.print(arrayReference.getObjectType());
 			System.out.print("[] ");
-			System.out.print("{");
-			// FIXME On doit utilise la taille de l'array reference et non pas
-			// la taille de la liste
-			for (int i = 0; i < ((ConstantArrayReference) arrayReference).getValues().size(); i++) {
-				if (((ConstantArrayReference) arrayReference).getValues().get(i) != null) {
-					((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
-				} else {
-					// FIXME (null ou la valeur par defaut si type primitif
-					System.out.print("null ");
+			if (((ConstantArrayReference) arrayReference).getValues() != null) {
+				System.out.print("{");
+				// FIXME On doit utilise la taille de l'array reference et non
+				// pas
+				// la taille de la liste
+				for (int i = 0; i < ((ConstantArrayReference) arrayReference).getValues().size(); i++) {
+					if (((ConstantArrayReference) arrayReference).getValues().get(i) != null) {
+						((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
+					} else {
+						// FIXME (null ou la valeur par defaut si type primitif
+						System.out.print("null ");
+					}
+					if (((ConstantArrayReference) arrayReference).getValues().size() - i > 1) {
+						System.out.print(", ");
+					}
 				}
-				if (((ConstantArrayReference) arrayReference).getValues().size() - i > 1) {
-					System.out.print(", ");
-				}
+				System.out.print("}");
 			}
-			System.out.print("}");
 		}
 	}
 
