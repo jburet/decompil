@@ -20,7 +20,7 @@ import jdecomp.core.model.code.instruction.MethodInvocation;
 import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class ArrayRefInvocationOperandResult extends InvocationOperandResult implements Operand, Array {
 
@@ -29,7 +29,7 @@ public class ArrayRefInvocationOperandResult extends InvocationOperandResult imp
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		// TODO Auto-generated method stub
 
 	}

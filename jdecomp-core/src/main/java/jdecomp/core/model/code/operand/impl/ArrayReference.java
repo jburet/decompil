@@ -20,7 +20,7 @@ import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.code.operand.Variable;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class ArrayReference implements Array, Variable {
 
@@ -46,7 +46,7 @@ public class ArrayReference implements Array, Variable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitArrayReference(this);
 	}
 

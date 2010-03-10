@@ -23,8 +23,7 @@ import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.ArrayType;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
-
+import jdecomp.core.visitor.MethodVisitor;
 
 /**
  * 
@@ -59,7 +58,7 @@ public class ConstantArrayReference implements Array {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitArrayReference(this);
 	}
 

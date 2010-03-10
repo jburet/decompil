@@ -39,7 +39,7 @@ import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
 import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
 
-public class JavaResumeVisitor implements Visitor {
+public class JavaResumeVisitor implements MethodVisitor {
 
 	@Override
 	public void visitConditionalBranching(ConditionalBrancheInstruction conditionalBranching) {

@@ -1,7 +1,7 @@
 package jdecomp.core.model.code.instruction;
 
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class MonitorEnterInstruction extends Instruction {
 
@@ -13,7 +13,7 @@ public class MonitorEnterInstruction extends Instruction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		// TODO Auto-generated method stub
 
 	}

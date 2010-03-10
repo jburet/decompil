@@ -39,5 +39,48 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="jdecomp.visualisation.handlers.OpenFileChooserHandler"
+            id="jdecomp.visualisation.command.OpenFileChooser"
+            name="OpenFileChooser">
+      </command>
+      <command
+            defaultHandler="jdecomp.visualisation.handlers.ExitHandler"
+            id="jdecomp.visualisation.command.Exit"
+            name="Exit">
+      </command>
+         
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="File">
+            <command
+                  commandId="jdecomp.visualisation.command.OpenFileChooser"
+                  id="OpenFileChooserMenuElement"
+                  label="Open class"
+                  style="push"
+                  tooltip="Open a class">
+            </command>
+            <separator
+                  name="jdecomp-visualisation.separator2">
+            </separator>
+            <command
+                  commandId="jdecomp.visualisation.command.Exit"
+                  id="exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <separator
+               name="jdecomp-visualisation.separator1">
+         </separator>
+      </menuContribution>
+   </extension>
 
 </plugin>

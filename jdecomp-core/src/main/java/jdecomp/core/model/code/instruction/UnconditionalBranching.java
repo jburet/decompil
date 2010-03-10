@@ -16,7 +16,7 @@
 
 package jdecomp.core.model.code.instruction;
 
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class UnconditionalBranching extends Instruction {
 
@@ -31,7 +31,7 @@ public class UnconditionalBranching extends Instruction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitUnconditionalBranching(this);
 	}
 

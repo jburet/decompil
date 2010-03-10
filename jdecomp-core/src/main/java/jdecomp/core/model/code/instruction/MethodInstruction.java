@@ -16,7 +16,7 @@
 
 package jdecomp.core.model.code.instruction;
 
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class MethodInstruction extends BlockInstruction{
 
@@ -25,7 +25,7 @@ public class MethodInstruction extends BlockInstruction{
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitMethodInstruction(this);
 	}
 

@@ -23,13 +23,13 @@ import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
 import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
 import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 /**
  * @author jburet
  * 
  */
-public class MethodComplexityVisitor implements Visitor {
+public class MethodComplexityVisitor implements MethodVisitor {
 
 	private int nodes;
 	private int edges;

@@ -18,7 +18,7 @@ package jdecomp.core.model.code.operand.impl;
 
 import jdecomp.core.model.code.operand.ConditionalOperator;
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class ConditionalOperation implements Operand {
 
@@ -26,15 +26,14 @@ public class ConditionalOperation implements Operand {
 	private Operand operand2;
 	private ConditionalOperator co;
 
-	public ConditionalOperation(Operand operand1, Operand operand2,
-			ConditionalOperator co) {
+	public ConditionalOperation(Operand operand1, Operand operand2, ConditionalOperator co) {
 		this.operand1 = operand1;
 		this.operand2 = operand2;
 		this.co = co;
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitConditionalOperation(this);
 	}
 

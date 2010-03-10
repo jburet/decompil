@@ -5,6 +5,8 @@
 target
 .settings
 bin
+.manager
+*.jar
 # Use wildcards as well
 #*~
 #*.swp

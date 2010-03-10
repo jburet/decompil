@@ -19,6 +19,7 @@ package jdecomp.core.model.classes;
 import jdecomp.core.model.attribute.Attribute;
 import jdecomp.core.model.field.FieldInfo;
 import jdecomp.core.model.method.MethodInfo;
+import jdecomp.core.visitor.ClassVisitor;
 
 public class ClassFile {
 
@@ -166,6 +167,10 @@ public class ClassFile {
 
 	public void setAttributes(Attribute[] attributes) {
 		this.attributes = attributes;
+	}
+
+	public void accept(ClassVisitor visitor) {
+		visitor.visitClassFile(this);
 	}
 
 }

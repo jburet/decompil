@@ -19,7 +19,7 @@ package jdecomp.core.model.code.operand.impl;
 import jdecomp.core.model.code.instruction.MethodInvocation;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class SimpleInvocationOperandResult extends InvocationOperandResult implements Operand {
 
@@ -28,15 +28,14 @@ public class SimpleInvocationOperandResult extends InvocationOperandResult imple
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Type getReturnType() {
 		return methodInvocation.getReturnType();
 	}
-
 
 }

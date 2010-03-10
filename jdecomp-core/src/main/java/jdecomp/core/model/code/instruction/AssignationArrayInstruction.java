@@ -18,7 +18,7 @@ package jdecomp.core.model.code.instruction;
 
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class AssignationArrayInstruction extends Instruction {
 
@@ -37,7 +37,7 @@ public class AssignationArrayInstruction extends Instruction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitArrayAssignation(this);
 	}
 

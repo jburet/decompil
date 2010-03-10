@@ -21,7 +21,7 @@ package jdecomp.core.model.code.instruction;
 
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 /**
  * @author jburet
@@ -53,7 +53,7 @@ public class StaticMethodInvocationInstruction extends MethodInvocation {
 	 * decompiler.instruction.Instruction#accept(decompiler.visitor.Visitor)
 	 */
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitStaticMethodInvocation(this);
 	}
 

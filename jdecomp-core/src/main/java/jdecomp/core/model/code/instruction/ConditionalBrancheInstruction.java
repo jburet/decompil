@@ -20,7 +20,7 @@ import jdecomp.core.model.code.OpCodes;
 import jdecomp.core.model.code.operand.ConditionalOperator;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.code.operand.impl.ConditionalOperation;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class ConditionalBrancheInstruction extends Instruction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitConditionalBranching(this);
 	}
 

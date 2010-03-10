@@ -30,10 +30,7 @@ import jdecomp.core.model.constant.DescriptorType;
 import jdecomp.core.model.field.FieldAccessFlag;
 import jdecomp.core.model.method.MethodAccessFlag;
 
-
 public class ClassFileUtils {
-
-	public static final String NEWLINE = System.getProperty("line.separator");
 
 	public static String decodeThisClass(ClassFile cf) {
 		ConstantPoolInfo[] cp = cf.getConstantPool();

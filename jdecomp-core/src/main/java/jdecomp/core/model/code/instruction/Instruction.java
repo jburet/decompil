@@ -16,7 +16,7 @@
 
 package jdecomp.core.model.code.instruction;
 
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public abstract class Instruction {
 
@@ -30,6 +30,6 @@ public abstract class Instruction {
 		return currentIndex;
 	}
 
-	public abstract void accept(Visitor visitor);
+	public abstract void accept(MethodVisitor visitor);
 
 }

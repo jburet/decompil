@@ -17,7 +17,7 @@
 package jdecomp.core.model.code.instruction;
 
 import jdecomp.core.model.code.OpCodes;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class StatementInstruction extends Instruction{
 
@@ -33,7 +33,7 @@ public class StatementInstruction extends Instruction{
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitStatementInstruction(this);
 	}
 

@@ -2,7 +2,7 @@ package jdecomp.core.model.code.operand.impl;
 
 import jdecomp.core.model.code.instruction.Instruction;
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class ThrowInstruction extends Instruction {
 
@@ -11,7 +11,7 @@ public class ThrowInstruction extends Instruction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		// TODO Auto-generated method stub
 
 	}

@@ -18,7 +18,7 @@ package jdecomp.core.model.code.operand;
 
 import jdecomp.core.model.code.operand.impl.TypeDefinedByString;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class ObjectReference implements Variable {
 
@@ -54,7 +54,7 @@ public class ObjectReference implements Variable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitObjectReference(this);
 	}
 

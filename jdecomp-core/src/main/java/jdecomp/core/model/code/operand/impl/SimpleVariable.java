@@ -18,7 +18,7 @@ package jdecomp.core.model.code.operand.impl;
 
 import jdecomp.core.model.code.operand.Variable;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class SimpleVariable implements Variable {
 
@@ -47,7 +47,7 @@ public class SimpleVariable implements Variable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitVariable(this);
 	}
 }

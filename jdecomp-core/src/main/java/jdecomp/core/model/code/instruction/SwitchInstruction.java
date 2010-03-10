@@ -17,7 +17,7 @@
 package jdecomp.core.model.code.instruction;
 
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.visitor.Visitor;
+import jdecomp.core.visitor.MethodVisitor;
 
 public class SwitchInstruction extends Instruction {
 
@@ -36,7 +36,7 @@ public class SwitchInstruction extends Instruction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(MethodVisitor visitor) {
 		visitor.visitSwitch(this);
 	}
 
