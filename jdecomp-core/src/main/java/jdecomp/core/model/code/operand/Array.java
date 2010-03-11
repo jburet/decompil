@@ -16,7 +16,6 @@
 
 package jdecomp.core.model.code.operand;
 
-import jdecomp.core.model.constant.Type;
 
 public interface Array extends Operand {
 
@@ -24,6 +23,6 @@ public interface Array extends Operand {
 
 	int getDimension();
 
-	Type getObjectType();
+	ArrayType getType();
 
 }

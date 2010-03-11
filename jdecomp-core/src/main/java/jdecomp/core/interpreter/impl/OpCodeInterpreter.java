@@ -790,7 +790,7 @@ public class OpCodeInterpreter {
 		// Gestion des tableaux
 		case newarray:
 			// Ajout d'une reference de tableau dans la stack
-			operandStack.push(new ConstantArrayReference(ArrayType.getByCode((short) getUnsignedValue(code[++i])),
+			operandStack.push(new ConstantArrayReference(new ArrayType((short) getUnsignedValue(code[++i])),
 					operandStack.pop()));
 			break;
 
@@ -798,9 +798,9 @@ public class OpCodeInterpreter {
 			// Ajout d'un tableau de reference dans la stack
 			tmpIndex = getIndex(code[++i], code[++i]);
 			constantClass = (ConstantClass) constants[tmpIndex - 1];
-			operandStack.push(new ConstantArrayReference(ArrayType.T_REF, ClassFileUtils.parseDescriptor(ClassFileUtils
-					.decodeUTF(methodInfo.getReferentClassFile(), constantClass.getNameConstantIndex())), operandStack
-					.pop()));
+			operandStack.push(new ConstantArrayReference(new ArrayType(ClassFileUtils
+					.parseDescriptorFromConstant(ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(),
+							constantClass.getNameConstantIndex()))), operandStack.pop()));
 			break;
 		case multianewarray:
 			tmpIndex = getIndex(code[++i], code[++i]);
@@ -810,10 +810,9 @@ public class OpCodeInterpreter {
 			for (int j = 0; j < dimension; j++) {
 				operandArray[j] = operandStack.pop();
 			}
-			operandStack
-					.push(new ConstantArrayReference(ArrayType.T_REF, ClassFileUtils.parseDescriptor(ClassFileUtils
-							.decodeUTF(methodInfo.getReferentClassFile(), constantClass.getNameConstantIndex())),
-							operandArray));
+			operandStack.push(new ConstantArrayReference(new ArrayType(ClassFileUtils
+					.parseDescriptorFromConstant(ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(),
+							constantClass.getNameConstantIndex()))), operandArray));
 			break;
 		case arraylength:
 			// Appel l'instruction java length sur un tableau

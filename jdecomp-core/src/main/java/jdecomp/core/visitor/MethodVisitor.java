@@ -26,13 +26,6 @@ import jdecomp.core.model.code.instruction.StatementInstruction;
 import jdecomp.core.model.code.instruction.StaticMethodInvocationInstruction;
 import jdecomp.core.model.code.instruction.SwitchInstruction;
 import jdecomp.core.model.code.instruction.UnconditionalBranching;
-import jdecomp.core.model.code.operand.Array;
-import jdecomp.core.model.code.operand.ObjectReference;
-import jdecomp.core.model.code.operand.Variable;
-import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
-import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
-import jdecomp.core.model.code.operand.impl.ConditionalOperation;
-import jdecomp.core.model.code.operand.impl.Constant;
 
 public interface MethodVisitor {
 
@@ -42,29 +35,15 @@ public interface MethodVisitor {
 
 	public void visitConditionalBranching(ConditionalBrancheInstruction ifBlock);
 
-	public void visitVariable(Variable variable);
-
-	public void visitConditionalOperation(ConditionalOperation conditionalBlock);
-
-	public void visitConstant(Constant constant);
-
 	public void visitAssignation(AssignationInstruction assignationInstruction);
 
 	public void visitReturn(ReturnInstruction returnInstruction);
 
 	public void visitInstanceMethodInvocation(InstanceMethodInvocationInstruction instanceMethodInvocationInstruction);
 
-	public void visitObjectReference(ObjectReference objectReference);
-
-	public void visitArrayReference(Array arrayReference);
-
-	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction);
-
 	public void visitUnconditionalBranching(UnconditionalBranching unconditionalBranching);
 
-	public void visitArithmethicOperation(ArithmeticOperation arithmeticOperation);
-
-	public void visitArrayAccessInstruction(ArrayAccessInstruction arrayAccessInstruction);
+	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction);
 
 	/**
 	 * @param switchInstruction

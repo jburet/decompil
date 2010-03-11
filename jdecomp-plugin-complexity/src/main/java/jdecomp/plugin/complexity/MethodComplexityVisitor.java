@@ -16,13 +16,6 @@ import jdecomp.core.model.code.instruction.StatementInstruction;
 import jdecomp.core.model.code.instruction.StaticMethodInvocationInstruction;
 import jdecomp.core.model.code.instruction.SwitchInstruction;
 import jdecomp.core.model.code.instruction.UnconditionalBranching;
-import jdecomp.core.model.code.operand.Array;
-import jdecomp.core.model.code.operand.ObjectReference;
-import jdecomp.core.model.code.operand.Variable;
-import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
-import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
-import jdecomp.core.model.code.operand.impl.ConditionalOperation;
-import jdecomp.core.model.code.operand.impl.Constant;
 import jdecomp.core.visitor.MethodVisitor;
 
 /**
@@ -44,51 +37,12 @@ public class MethodComplexityVisitor implements MethodVisitor {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * jdecomp.core.visitor.Visitor#visitArithmethicOperation(jdecomp.core.model
-	 * .code.operand.impl.ArithmeticOperation)
-	 */
-	@Override
-	public void visitArithmethicOperation(ArithmeticOperation arithmeticOperation) {
-		// TODO node pouvant etre > 1 (&& ou ||)
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * jdecomp.core.visitor.Visitor#visitArrayAccessInstruction(jdecomp.core
-	 * .model.code.operand.impl.ArrayAccessInstruction)
-	 */
-	@Override
-	public void visitArrayAccessInstruction(ArrayAccessInstruction arrayAccessInstruction) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
 	 * jdecomp.core.visitor.Visitor#visitArrayAssignation(jdecomp.core.model
 	 * .code.instruction.AssignationArrayInstruction)
 	 */
 	@Override
 	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
 		nodes++;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * jdecomp.core.visitor.Visitor#visitArrayReference(jdecomp.core.model.code
-	 * .operand.Array)
-	 */
-	@Override
-	public void visitArrayReference(Array arrayReference) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -120,32 +74,6 @@ public class MethodComplexityVisitor implements MethodVisitor {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * jdecomp.core.visitor.Visitor#visitConditionalOperation(jdecomp.core.model
-	 * .code.operand.impl.ConditionalOperation)
-	 */
-	@Override
-	public void visitConditionalOperation(ConditionalOperation conditionalBlock) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * jdecomp.core.visitor.Visitor#visitConstant(jdecomp.core.model.code.operand
-	 * .impl.Constant)
-	 */
-	@Override
-	public void visitConstant(Constant constant) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
 	 * jdecomp.core.visitor.Visitor#visitInstanceMethodInvocation(jdecomp.core
 	 * .model.code.instruction.InstanceMethodInvocationInstruction)
 	 */
@@ -171,19 +99,6 @@ public class MethodComplexityVisitor implements MethodVisitor {
 			}
 			ins.getValue().accept(this);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * jdecomp.core.visitor.Visitor#visitObjectReference(jdecomp.core.model.
-	 * code.operand.ObjectReference)
-	 */
-	@Override
-	public void visitObjectReference(ObjectReference objectReference) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -246,19 +161,6 @@ public class MethodComplexityVisitor implements MethodVisitor {
 		noConnection = true;
 		edges++;
 		nodes++;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * jdecomp.core.visitor.Visitor#visitVariable(jdecomp.core.model.code.operand
-	 * .Variable)
-	 */
-	@Override
-	public void visitVariable(Variable variable) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public int getNodes() {

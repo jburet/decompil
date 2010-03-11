@@ -22,8 +22,7 @@ import java.util.List;
 import jdecomp.core.model.code.operand.Array;
 import jdecomp.core.model.code.operand.ArrayType;
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.MethodVisitor;
+import jdecomp.core.visitor.OperandVisitor;
 
 /**
  * 
@@ -34,44 +33,31 @@ import jdecomp.core.visitor.MethodVisitor;
  */
 public class ConstantArrayReference implements Array {
 
-	private final ArrayType arrayType;
+	private ArrayType type;
 
-	private Type objectType;
-
-	private final Operand[] size;
+	private Operand[] size;
 
 	private List<Operand> values;
 
 	private int dimension;
 
 	public ConstantArrayReference(ArrayType arrayType, Operand... size) {
-		this.arrayType = arrayType;
+		this.type = arrayType;
 		this.dimension = size.length;
 		this.size = size;
-	}
-
-	public ConstantArrayReference(ArrayType arrayType, Type objectType, Operand... size) {
-		this.arrayType = arrayType;
-		this.dimension = size.length;
-		this.size = size;
-		this.objectType = objectType;
 	}
 
 	@Override
-	public void accept(MethodVisitor visitor) {
+	public void accept(OperandVisitor visitor) {
 		visitor.visitArrayReference(this);
 	}
 
-	public ArrayType getArrayType() {
-		return arrayType;
+	public ArrayType getType() {
+		return type;
 	}
 
 	public Operand[] getSize() {
 		return size;
-	}
-
-	public Type getObjectType() {
-		return objectType;
 	}
 
 	public List<Operand> getValues() {

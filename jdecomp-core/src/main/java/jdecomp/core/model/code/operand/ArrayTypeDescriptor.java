@@ -16,34 +16,34 @@
 
 package jdecomp.core.model.code.operand;
 
-import jdecomp.core.model.code.Descriptor;
-import jdecomp.core.model.constant.Type;
+public enum ArrayTypeDescriptor {
 
-public class ArrayType implements Type {
+	T_BOOLEAN((short) 4),
+	T_CHAR((short) 5),
+	T_FLOAT((short) 6),
+	T_DOUBLE((short) 7),
+	T_BYTE((short) 8),
+	T_SHORT((short) 9),
+	T_INT((short) 10),
+	T_LONG((short) 11),
+	T_REF((short) 0);
 
-	private ArrayTypeDescriptor arrayTypeDescriptor;
+	private short code;
 
-	private Descriptor classDescriptor;
-
-	public ArrayType(short arrayTypeCode) {
-		arrayTypeDescriptor = ArrayTypeDescriptor.getByCode(arrayTypeCode);
+	private ArrayTypeDescriptor(short code) {
+		this.code = code;
 	}
 
-	public ArrayType(Descriptor descriptor) {
-		arrayTypeDescriptor = ArrayTypeDescriptor.T_REF;
-		classDescriptor = descriptor;
+	public short getCode() {
+		return this.code;
 	}
 
-	@Override
-	public boolean isArray() {
-		return true;
-	}
-
-	public ArrayTypeDescriptor getArrayTypeDescriptor() {
-		return arrayTypeDescriptor;
-	}
-
-	public Descriptor getClassDescriptor() {
-		return classDescriptor;
+	public static ArrayTypeDescriptor getByCode(short code) {
+		for (ArrayTypeDescriptor at : values()) {
+			if (at.getCode() == code) {
+				return at;
+			}
+		}
+		return T_REF;
 	}
 }

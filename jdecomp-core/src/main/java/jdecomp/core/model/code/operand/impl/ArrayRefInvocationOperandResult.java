@@ -18,9 +18,10 @@ package jdecomp.core.model.code.operand.impl;
 
 import jdecomp.core.model.code.instruction.MethodInvocation;
 import jdecomp.core.model.code.operand.Array;
+import jdecomp.core.model.code.operand.ArrayType;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.MethodVisitor;
+import jdecomp.core.visitor.OperandVisitor;
 
 public class ArrayRefInvocationOperandResult extends InvocationOperandResult implements Operand, Array {
 
@@ -29,13 +30,13 @@ public class ArrayRefInvocationOperandResult extends InvocationOperandResult imp
 	}
 
 	@Override
-	public void accept(MethodVisitor visitor) {
+	public void accept(OperandVisitor visitor) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Type getObjectType() {
+	public ArrayType getType() {
 		// TODO Auto-generated method stub
 		return null;
 	}

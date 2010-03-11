@@ -31,20 +31,14 @@ import jdecomp.core.model.code.instruction.StatementInstruction;
 import jdecomp.core.model.code.instruction.StaticMethodInvocationInstruction;
 import jdecomp.core.model.code.instruction.SwitchInstruction;
 import jdecomp.core.model.code.instruction.UnconditionalBranching;
-import jdecomp.core.model.code.operand.Array;
-import jdecomp.core.model.code.operand.ObjectReference;
-import jdecomp.core.model.code.operand.Variable;
-import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
-import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
 import jdecomp.core.model.code.operand.impl.ArrayReference;
-import jdecomp.core.model.code.operand.impl.ConditionalOperation;
-import jdecomp.core.model.code.operand.impl.Constant;
-import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
 import jdecomp.core.visitor.MethodVisitor;
 
 public class JavaCodeVisitor implements MethodVisitor {
 
 	private List<JavaSourceInstruction> javaIns = new ArrayList<JavaSourceInstruction>();
+
+	private JavaOperandVisitor javaOperandVisitor = new JavaOperandVisitor();
 
 	public List<JavaSourceInstruction> getJavaIns() {
 		return javaIns;
@@ -54,7 +48,8 @@ public class JavaCodeVisitor implements MethodVisitor {
 	public void visitConditionalBranching(ConditionalBrancheInstruction conditionalBranching) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("if(");
-		conditionalBranching.getCondition().accept(this);
+		conditionalBranching.getCondition().accept(javaOperandVisitor);
+		sb.append(javaOperandVisitor.getJavaString());
 		sb.append(") goto : " + conditionalBranching.getBranchIndex());
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
@@ -82,56 +77,11 @@ public class JavaCodeVisitor implements MethodVisitor {
 	}
 
 	@Override
-	public void visitConditionalOperation(ConditionalOperation conditionalBlock) {
-		StringBuffer sb = new StringBuffer();
-		conditionalBlock.getOperand1().accept(this);
-		sb.append(" " + conditionalBlock.getCo().getOp() + " ");
-		conditionalBlock.getOperand2().accept(this);
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitConstant(Constant constant) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(constant.getValue());
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitVariable(Variable variable) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(variable.getName());
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitObjectReference(ObjectReference objectReference) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(objectReference.getName());
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
 	public void visitAssignation(AssignationInstruction assignationInstruction) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(assignationInstruction.getVarName() + " = ");
-		assignationInstruction.getValue().accept(this);
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
-		StringBuffer sb = new StringBuffer();
-		if (assignationArrayInstruction.getArrayRef() instanceof ArrayReference
-				&& ((ArrayReference) assignationArrayInstruction.getArrayRef()).getName() != null) {
-			assignationArrayInstruction.getArrayRef().accept(this);
-			sb.append("[");
-			assignationArrayInstruction.getIndex().accept(this);
-			sb.append("] = ");
-			assignationArrayInstruction.getValue().accept(this);
-		} else {
-			// TODO On stocke les assignations dans la reference du tableau
-		}
+		assignationInstruction.getValue().accept(javaOperandVisitor);
+		sb.append(javaOperandVisitor.getJavaString());
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
 
@@ -140,7 +90,8 @@ public class JavaCodeVisitor implements MethodVisitor {
 		StringBuffer sb = new StringBuffer();
 		sb.append("return ");
 		if (returnInstruction.getOperand() != null) {
-			returnInstruction.getOperand().accept(this);
+			returnInstruction.getOperand().accept(javaOperandVisitor);
+			sb.append(javaOperandVisitor.getJavaString());
 		}
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
@@ -148,65 +99,16 @@ public class JavaCodeVisitor implements MethodVisitor {
 	@Override
 	public void visitInstanceMethodInvocation(InstanceMethodInvocationInstruction instanceMethodInvocationInstruction) {
 		StringBuffer sb = new StringBuffer();
-		instanceMethodInvocationInstruction.getIntance().accept(this);
+		instanceMethodInvocationInstruction.getIntance().accept(javaOperandVisitor);
+		sb.append(javaOperandVisitor.getJavaString());
 		sb.append("." + instanceMethodInvocationInstruction.getMethodName() + "(");
 		for (int i = instanceMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
-			instanceMethodInvocationInstruction.getArgs()[i].accept(this);
+			instanceMethodInvocationInstruction.getArgs()[i].accept(javaOperandVisitor);
+			sb.append(javaOperandVisitor.getJavaString());
 			if (i > 0) {
 				sb.append(", ");
 			}
 		}
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitArrayReference(Array arrayReference) {
-		StringBuffer sb = new StringBuffer();
-		if (arrayReference instanceof ArrayReference && ((ArrayReference) arrayReference).getName() != null) {
-			sb.append(((ArrayReference) arrayReference).getName());
-		} else if (arrayReference instanceof ConstantArrayReference) {
-			// TODO Sinon on affiche les assignations stockes
-			sb.append("new ");
-			sb.append(arrayReference.getObjectType());
-			sb.append("[] ");
-			if (((ConstantArrayReference) arrayReference).getValues() != null) {
-				sb.append("{");
-				// FIXME On doit utilise la taille de l'array reference et non
-				// pas
-				// la taille de la liste
-				for (int i = 0; i < ((ConstantArrayReference) arrayReference).getValues().size(); i++) {
-					if (((ConstantArrayReference) arrayReference).getValues().get(i) != null) {
-						((ConstantArrayReference) arrayReference).getValues().get(i).accept(this);
-					} else {
-						// FIXME (null ou la valeur par defaut si type primitif
-						sb.append("null ");
-					}
-					if (((ConstantArrayReference) arrayReference).getValues().size() - i > 1) {
-						sb.append(", ");
-					}
-				}
-				sb.append("}");
-			}
-		}
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitArithmethicOperation(ArithmeticOperation arithmeticOperation) {
-		StringBuffer sb = new StringBuffer();
-		arithmeticOperation.getOp1().accept(this);
-		sb.append(arithmeticOperation.getType().getSign());
-		arithmeticOperation.getOp2().accept(this);
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
-	}
-
-	@Override
-	public void visitArrayAccessInstruction(ArrayAccessInstruction arrayAccessInstruction) {
-		StringBuffer sb = new StringBuffer();
-		arrayAccessInstruction.getArrayReference().accept(this);
-		sb.append("[");
-		arrayAccessInstruction.getIndex().accept(this);
-		sb.append("]");
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
 
@@ -220,7 +122,8 @@ public class JavaCodeVisitor implements MethodVisitor {
 	public void visitSwitch(SwitchInstruction switchInstruction) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("switch(");
-		switchInstruction.getIndex().accept(this);
+		switchInstruction.getIndex().accept(javaOperandVisitor);
+		sb.append(javaOperandVisitor.getJavaString());
 		sb.append(") {");
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 
@@ -245,10 +148,30 @@ public class JavaCodeVisitor implements MethodVisitor {
 		sb.append(staticMethodInvocationInstruction.getClassName() + "."
 				+ staticMethodInvocationInstruction.getMethodName() + "(");
 		for (int i = staticMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
-			staticMethodInvocationInstruction.getArgs()[i].accept(this);
+			staticMethodInvocationInstruction.getArgs()[i].accept(javaOperandVisitor);
+			sb.append(javaOperandVisitor.getJavaString());
 			if (i > 0) {
 				sb.append(", ");
 			}
+		}
+		javaIns.add(new JavaSourceInstruction(sb.toString()));
+	}
+
+	@Override
+	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
+		StringBuffer sb = new StringBuffer();
+		if (assignationArrayInstruction.getArrayRef() instanceof ArrayReference
+				&& ((ArrayReference) assignationArrayInstruction.getArrayRef()).getName() != null) {
+			assignationArrayInstruction.getArrayRef().accept(javaOperandVisitor);
+			sb.append(javaOperandVisitor.getJavaString());
+			sb.append("[");
+			assignationArrayInstruction.getIndex().accept(javaOperandVisitor);
+			sb.append(javaOperandVisitor.getJavaString());
+			sb.append("] = ");
+			assignationArrayInstruction.getValue().accept(javaOperandVisitor);
+			sb.append(javaOperandVisitor.getJavaString());
+		} else {
+			// TODO On stocke les assignations dans la reference du tableau
 		}
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}

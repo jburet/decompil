@@ -17,10 +17,10 @@
 package jdecomp.core.model.code.operand.impl;
 
 import jdecomp.core.model.code.operand.Array;
+import jdecomp.core.model.code.operand.ArrayType;
 import jdecomp.core.model.code.operand.Operand;
 import jdecomp.core.model.code.operand.Variable;
-import jdecomp.core.model.constant.Type;
-import jdecomp.core.visitor.MethodVisitor;
+import jdecomp.core.visitor.OperandVisitor;
 
 public class ArrayReference implements Array, Variable {
 
@@ -28,11 +28,11 @@ public class ArrayReference implements Array, Variable {
 
 	private String name;
 
-	private Type type;
+	private ArrayType type;
 
 	private int dimension;
 
-	public ArrayReference(Operand operandReference, String name, Type type, int dimension) {
+	public ArrayReference(Operand operandReference, String name, ArrayType type, int dimension) {
 		this.operandReference = operandReference;
 		this.name = name;
 		this.type = type;
@@ -40,13 +40,13 @@ public class ArrayReference implements Array, Variable {
 	}
 
 	public ArrayReference(ConstantArrayReference operand, String name) {
-		this.type = operand.getObjectType();
+		this.type = operand.getType();
 		this.name = name;
 		this.dimension = operand.getDimension();
 	}
 
 	@Override
-	public void accept(MethodVisitor visitor) {
+	public void accept(OperandVisitor visitor) {
 		visitor.visitArrayReference(this);
 	}
 
@@ -69,12 +69,7 @@ public class ArrayReference implements Array, Variable {
 	}
 
 	@Override
-	public Type getObjectType() {
-		return this.type;
-	}
-
-	@Override
-	public Type getType() {
+	public ArrayType getType() {
 		return this.type;
 	}
 

@@ -124,6 +124,10 @@ public class ClassFileUtils {
 		return null;
 	}
 
+	public static Descriptor parseDescriptorFromConstant(String descriptor) {
+		return new Descriptor(DescriptorType.CLASS, parseDescriptorClass(descriptor));
+	}
+
 	private static String parseDescriptorClass(String classString) {
 		if (classString.indexOf(";") > -1) {
 			classString = classString.substring(0, classString.indexOf(";"));

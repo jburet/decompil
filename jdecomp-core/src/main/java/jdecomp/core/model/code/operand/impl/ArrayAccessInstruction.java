@@ -17,7 +17,7 @@
 package jdecomp.core.model.code.operand.impl;
 
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.visitor.MethodVisitor;
+import jdecomp.core.visitor.OperandVisitor;
 
 public class ArrayAccessInstruction implements Operand {
 
@@ -31,7 +31,7 @@ public class ArrayAccessInstruction implements Operand {
 	}
 
 	@Override
-	public void accept(MethodVisitor visitor) {
+	public void accept(OperandVisitor visitor) {
 		visitor.visitArrayAccessInstruction(this);
 	}
 
