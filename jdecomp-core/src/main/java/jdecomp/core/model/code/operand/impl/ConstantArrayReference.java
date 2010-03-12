@@ -48,8 +48,8 @@ public class ConstantArrayReference implements Array {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitArrayReference(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitArrayReference(this);
 	}
 
 	public ArrayType getType() {

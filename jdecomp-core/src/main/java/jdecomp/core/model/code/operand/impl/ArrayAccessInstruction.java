@@ -31,8 +31,8 @@ public class ArrayAccessInstruction implements Operand {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitArrayAccessInstruction(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitArrayAccessInstruction(this);
 	}
 
 	public Operand getArrayReference() {

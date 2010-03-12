@@ -33,8 +33,8 @@ public class ConditionalOperation implements Operand {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitConditionalOperation(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitConditionalOperation(this);
 	}
 
 	public Operand getOperand1() {

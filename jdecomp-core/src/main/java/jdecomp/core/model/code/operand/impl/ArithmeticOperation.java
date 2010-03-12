@@ -38,8 +38,8 @@ public class ArithmeticOperation implements Operand {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitArithmethicOperation(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitArithmethicOperation(this);
 	}
 
 	public Operand getOp1() {

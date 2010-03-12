@@ -8,7 +8,6 @@ import jdecomp.core.interpreter.utils.ClassFileUtils;
 import jdecomp.core.model.classes.ClassAccessFlag;
 import jdecomp.core.model.classes.ClassFile;
 import jdecomp.core.model.code.Descriptor;
-import jdecomp.core.model.constant.Type;
 import jdecomp.core.model.field.FieldAccessFlag;
 import jdecomp.core.model.field.FieldInfo;
 import jdecomp.core.model.method.MethodAccessFlag;
@@ -41,7 +40,7 @@ public class ClassVisitorDecompiler implements ClassVisitor {
 		MethodInfo mi;
 		MethodAccessFlag[] flags;
 		StringBuffer sb;
-		Type[] argType;
+		Descriptor[] argType;
 		String[] argName;
 		String methodName;
 		boolean constructorMethod = false;
@@ -107,7 +106,7 @@ public class ClassVisitorDecompiler implements ClassVisitor {
 				argType = mi.getArgType();
 				argName = mi.getArgName();
 				for (int j = 0; j < argType.length; j++) {
-					sb.append(argType[j]);
+					sb.append(DescriptorDecompiler.getJavaType(argType[j]));
 					// TODO Le nom devrait etre genere par une methode de
 					// MethodInfo
 					sb.append(" ");
@@ -181,8 +180,7 @@ public class ClassVisitorDecompiler implements ClassVisitor {
 			// TYPE
 			// TODO Lire et gerer les attributs de type signature...
 			fieldEncodedReturnType = ClassFileUtils.decodeUTF(classFile, field.getDescriptorIndex());
-			sb.append(ClassFileUtils.parseDescriptor(fieldEncodedReturnType.substring(0, fieldEncodedReturnType
-					.length() - 1)));
+			sb.append(DescriptorDecompiler.getJavaType(ClassFileUtils.parseDescriptor(fieldEncodedReturnType)));
 
 			// NAME
 			sb.append(" ");

@@ -26,7 +26,7 @@ public class TestClassVisitorDecompiler {
 	@Test
 	public void test() throws IOException {
 		Writer testWriter = new OutputStreamWriter(System.out);
-		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/ArrayAssignation.class");
+		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/conditional/ConditionalBrancheCompareTo0.class");
 		cvd.visitClassFile(cf);
 		jsf.formatJavaCode(cvd.getJavaSource(), testWriter);
 		testWriter.close();

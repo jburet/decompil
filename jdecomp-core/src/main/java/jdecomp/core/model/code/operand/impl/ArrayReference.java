@@ -46,8 +46,8 @@ public class ArrayReference implements Array, Variable {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitArrayReference(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitArrayReference(this);
 	}
 
 	public String getName() {

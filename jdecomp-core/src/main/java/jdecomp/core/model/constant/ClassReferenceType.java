@@ -39,4 +39,14 @@ public class ClassReferenceType implements Type {
 		return false;
 	}
 
+	@Override
+	public boolean isString() {
+		return classDescriptor.equals("java/lang/String");
+	}
+
+	@Override
+	public boolean isLongType() {
+		return false;
+	}
+
 }

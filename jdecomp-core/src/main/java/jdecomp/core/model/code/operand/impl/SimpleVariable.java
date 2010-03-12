@@ -47,7 +47,7 @@ public class SimpleVariable implements Variable {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitVariable(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitVariable(this);
 	}
 }

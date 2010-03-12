@@ -7,6 +7,8 @@ import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
 import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
 import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
+import jdecomp.core.model.code.operand.impl.InstanceInvocationOperandResult;
+import jdecomp.core.model.code.operand.impl.StaticInvocationOperandResult;
 
 public interface OperandVisitor<R> {
 
@@ -23,5 +25,9 @@ public interface OperandVisitor<R> {
 	R visitVariable(Variable variable);
 
 	R visitArrayAccessInstruction(ArrayAccessInstruction arrayAccessInstruction);
+
+	R visitInstanceInvocationOperandResult(InstanceInvocationOperandResult invocationOperandResult);
+
+	R visitStaticInvocationOperandResult(StaticInvocationOperandResult invocationOperandResult);
 
 }

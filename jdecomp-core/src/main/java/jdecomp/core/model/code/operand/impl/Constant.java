@@ -46,8 +46,8 @@ public class Constant implements Operand {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitConstant(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitConstant(this);
 	}
 
 }

@@ -23,18 +23,13 @@ import jdecomp.core.interpreter.impl.ByteCodeReader;
 import jdecomp.core.interpreter.impl.OpCodeInterpreter;
 import jdecomp.core.model.classes.ClassFile;
 import jdecomp.core.model.code.instruction.AssignationInstruction;
-import jdecomp.core.model.code.instruction.ConditionalBrancheInstruction;
 import jdecomp.core.model.code.instruction.MethodInstruction;
-import jdecomp.core.model.code.instruction.MethodInvocation;
-import jdecomp.core.model.code.operand.impl.Constant;
-import jdecomp.core.model.code.operand.impl.InvocationOperandResult;
+import jdecomp.core.model.code.operand.impl.InstanceInvocationOperandResult;
+import jdecomp.core.model.code.operand.impl.StaticInvocationOperandResult;
 import jdecomp.core.utils.debug.ClassFilePrinter;
-
 
 import org.junit.Before;
 import org.junit.Test;
-
-
 
 public class TestInvocationAssignation {
 	private ByteCodeReader bci;
@@ -64,7 +59,7 @@ public class TestInvocationAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof InvocationOperandResult);
+		assertTrue(ai.getValue() instanceof InstanceInvocationOperandResult);
 	}
 
 	@Test
@@ -74,16 +69,16 @@ public class TestInvocationAssignation {
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof InvocationOperandResult);
+		assertTrue(ai.getValue() instanceof StaticInvocationOperandResult);
 	}
-	
+
 	@Test
-	public void testPrimitifStaticInvocation (){
+	public void testPrimitifStaticInvocation() {
 		ClassFile cf = bci.readClassFile("src/test/classes/testclasses/assignation/InvocationResultAssignation.class");
 		MethodInstruction mi = cd.constructTree(cf.getMethods()[3]);
 		assertNotNull(mi);
 		assertTrue(mi.getInstructionsMap().firstEntry().getValue() instanceof AssignationInstruction);
 		AssignationInstruction ai = (AssignationInstruction) mi.getInstructionsMap().firstEntry().getValue();
-		assertTrue(ai.getValue() instanceof InvocationOperandResult);
+		assertTrue(ai.getValue() instanceof StaticInvocationOperandResult);
 	}
 }

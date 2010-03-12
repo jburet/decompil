@@ -16,26 +16,25 @@
 
 package jdecomp.core.model.code.operand.impl;
 
-import jdecomp.core.model.code.instruction.MethodInvocation;
+import jdecomp.core.model.code.instruction.InstanceMethodInvocationInstruction;
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.model.constant.Type;
 import jdecomp.core.visitor.OperandVisitor;
 
-public class SimpleInvocationOperandResult extends InvocationOperandResult implements Operand {
+public class InstanceInvocationOperandResult implements Operand {
 
-	public SimpleInvocationOperandResult(MethodInvocation methodInvocation) {
-		super(methodInvocation);
+	private InstanceMethodInvocationInstruction instanceMethodInvocationInstruction;
+
+	public InstanceInvocationOperandResult(InstanceMethodInvocationInstruction methodInvocation) {
+		this.instanceMethodInvocationInstruction = methodInvocation;
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		// TODO Auto-generated method stub
-
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitInstanceInvocationOperandResult(this);
 	}
 
-	@Override
-	public Type getReturnType() {
-		return methodInvocation.getReturnType();
+	public InstanceMethodInvocationInstruction getInstanceMethodInvocationInstruction() {
+		return instanceMethodInvocationInstruction;
 	}
 
 }

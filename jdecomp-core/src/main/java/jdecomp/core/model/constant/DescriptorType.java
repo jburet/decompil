@@ -60,4 +60,15 @@ public enum DescriptorType implements Type {
 		return false;
 	}
 
+	@Override
+	public boolean isString() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isLongType() {
+		return (this.equals(DescriptorType.DOUBLE) || this.equals(DescriptorType.LONG));
+	}
+
 }

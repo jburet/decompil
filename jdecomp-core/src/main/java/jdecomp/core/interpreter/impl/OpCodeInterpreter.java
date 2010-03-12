@@ -58,10 +58,12 @@ import jdecomp.core.model.code.operand.Variable;
 import jdecomp.core.model.code.operand.impl.ArithmeticOperation;
 import jdecomp.core.model.code.operand.impl.ArrayAccessInstruction;
 import jdecomp.core.model.code.operand.impl.ArrayReference;
+import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
 import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
-import jdecomp.core.model.code.operand.impl.SimpleInvocationOperandResult;
+import jdecomp.core.model.code.operand.impl.InstanceInvocationOperandResult;
 import jdecomp.core.model.code.operand.impl.SimpleVariable;
+import jdecomp.core.model.code.operand.impl.StaticInvocationOperandResult;
 import jdecomp.core.model.code.operand.impl.ThrowInstruction;
 import jdecomp.core.model.constant.ClassReferenceType;
 import jdecomp.core.model.constant.DescriptorType;
@@ -682,8 +684,11 @@ public class OpCodeInterpreter {
 			// Methode de d'instance
 			// On recupere la reference ce la methode a appeler
 			constantField = (ConstantField) constants[getIndex(code[++i], code[++i]) - 1];
+			constantClass = (ConstantClass) constants[constantField.getClassIndex() - 1];
 			constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
 			// On recupere le nom de la methode a appeler.
+			tmpClassName = ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantClass
+					.getNameConstantIndex());
 			tmpMethodName = ClassFileUtils
 					.decodeUTF(methodInfo.getReferentClassFile(), constantNameType.getNameIndex());
 			// On la signatures de la méthode
@@ -704,17 +709,48 @@ public class OpCodeInterpreter {
 				// est stocke dans la stack (c'est une
 				// autre
 				// instruction qui contient le resultat de la methode)
-				operandStack.push(new SimpleInvocationOperandResult(new StaticMethodInvocationInstruction(
-						currentPosition, "TODO-CLASSNAME", tmpMethodName, returnType.getDescriptorType(), operands)));
+				operandStack.push(new StaticInvocationOperandResult(new StaticMethodInvocationInstruction(
+						currentPosition, tmpClassName, tmpMethodName, returnType.getDescriptorType(), operands)));
 			} else {
 				// Sinon on creer l'instruction
 				currentInstruction.addInstruction(currentPosition, new StaticMethodInvocationInstruction(
-						currentPosition, "TODO-CLASSNAME", tmpMethodName, returnType.getDescriptorType(), operands));
+						currentPosition, tmpClassName, tmpMethodName, returnType.getDescriptorType(), operands));
 			}
 
 			break;
 		case invokespecial:
+			// Cas notamment du new
+			constantField = (ConstantField) constants[getIndex(code[++i], code[++i]) - 1];
+			constantNameType = (ConstantNameType) constants[constantField.getNameTypeIndex() - 1];
+			// On recupere le nom de la methode a appeler.
+			tmpMethodName = ClassFileUtils
+					.decodeUTF(methodInfo.getReferentClassFile(), constantNameType.getNameIndex());
+			// On la signatures de la methode
+			descriptor = ClassFileUtils.decodeUTF(methodInfo.getReferentClassFile(), constantNameType
+					.getDescritptorIndex());
+			argsType = DescriptorParser.parseDecodedMethodDescriptor(descriptor.substring(descriptor.indexOf('(') + 1,
+					descriptor.indexOf(')')));
+			returnType = DescriptorParser.parseReturnDecodedMethodDescriptor(descriptor.substring(descriptor
+					.indexOf(')') + 1));
+			operands = new Operand[argsType.length];
+			for (int j = 0; j < argsType.length; j++) {
+				operands[j] = operandStack.pop();
+			}
 
+			if (!returnType.getDescriptorType().equals(DescriptorType.VOID)) {
+				// S'il y a un retour alors c'est un operand, le resultat
+				// est stocke dans la stack (c'est une
+				// autre
+				// instruction qui contient le resultat de la methode)
+				operandStack.push(new InstanceInvocationOperandResult(new InstanceMethodInvocationInstruction(
+						currentPosition, operandStack.pop(), tmpMethodName, returnType.getDescriptorType(), operands)));
+			} else {
+				// Sinon on creer l'instruction
+				currentInstruction.addInstruction(currentPosition, new InstanceMethodInvocationInstruction(
+						currentPosition, operandStack.pop(), tmpMethodName, DescriptorType.VOID, operands));
+			}
+
+			break;
 		case invokevirtual:
 			// Methode de d'instance
 			// On recupere la reference ce la methode a appeler
@@ -735,12 +771,12 @@ public class OpCodeInterpreter {
 				operands[j] = operandStack.pop();
 			}
 
-			if (returnType.getDescriptorType() != DescriptorType.VOID) {
+			if (!returnType.getDescriptorType().equals(DescriptorType.VOID)) {
 				// S'il y a un retour alors c'est un operand, le resultat
 				// est stocke dans la stack (c'est une
 				// autre
 				// instruction qui contient le resultat de la methode)
-				operandStack.push(new SimpleInvocationOperandResult(new InstanceMethodInvocationInstruction(
+				operandStack.push(new InstanceInvocationOperandResult(new InstanceMethodInvocationInstruction(
 						currentPosition, operandStack.pop(), tmpMethodName, returnType.getDescriptorType(), operands)));
 			} else {
 				// Sinon on creer l'instruction
@@ -778,7 +814,7 @@ public class OpCodeInterpreter {
 				// est stocke dans la stack (c'est une
 				// autre
 				// instruction qui contient le resultat de la methode)
-				operandStack.push(new SimpleInvocationOperandResult(new InstanceMethodInvocationInstruction(
+				operandStack.push(new InstanceInvocationOperandResult(new InstanceMethodInvocationInstruction(
 						currentPosition, operandStack.pop(), tmpMethodName, returnType.getDescriptorType(), operands)));
 			} else {
 				// Sinon on creer l'instruction
@@ -1000,8 +1036,10 @@ public class OpCodeInterpreter {
 		case fcmpg:
 		case dcmpl:
 		case dcmpg:
+			operandStack.add(new ConditionalOperation(operandStack.pop(), operandStack.pop(), ConditionalOperator.LE));
+			break;
 
-			// Exception management
+		// Exception management
 		case athrow:
 			// Throw an exception
 			operand = operandStack.pop();
@@ -1140,8 +1178,9 @@ public class OpCodeInterpreter {
 				((ObjectReference) operand).setName("local" + tmpIndex);
 				localVariable.put(tmpIndex, (ObjectReference) operand);
 				return ((ObjectReference) operand).getName();
-			} else if (operand instanceof SimpleInvocationOperandResult) {
-				var = new SimpleVariable(((SimpleInvocationOperandResult) operand).getReturnType(), "local" + tmpIndex);
+			} else if (operand instanceof InstanceInvocationOperandResult) {
+				var = new SimpleVariable(((InstanceInvocationOperandResult) operand)
+						.getInstanceMethodInvocationInstruction().getReturnType(), "local" + tmpIndex);
 				localVariable.put(tmpIndex, var);
 				return var.getName();
 			} else if (operand instanceof SimpleVariable) {
@@ -1161,8 +1200,13 @@ public class OpCodeInterpreter {
 
 	private void fillLocalVariableWithArg(Map<Integer, Variable> localVariable, MethodInfo methodInfo) {
 		String[] args = methodInfo.getArgName();
+		Descriptor[] type = methodInfo.getArgType();
+		int offset = 1;
 		for (int i = 0; i < args.length; i++) {
-			localVariable.put(i + 1, new SimpleVariable(null, args[i]));
+			localVariable.put(i + offset, new SimpleVariable(null, args[i]));
+			if (type[i].isLongType()) {
+				offset++;
+			}
 		}
 	}
 

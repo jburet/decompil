@@ -20,4 +20,8 @@ public interface Type {
 
 	public boolean isArray();
 
+	public boolean isString();
+
+	boolean isLongType();
+
 }

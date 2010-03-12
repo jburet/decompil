@@ -19,5 +19,5 @@ package jdecomp.core.model.code.operand;
 import jdecomp.core.visitor.OperandVisitor;
 
 public interface Operand {
-	void accept(OperandVisitor visitor);
+	<T> T accept(OperandVisitor<T> visitor);
 }

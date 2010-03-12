@@ -46,4 +46,15 @@ public class ArrayType implements Type {
 	public Descriptor getClassDescriptor() {
 		return classDescriptor;
 	}
+
+	@Override
+	public boolean isString() {
+		return false;
+	}
+
+	@Override
+	public boolean isLongType() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

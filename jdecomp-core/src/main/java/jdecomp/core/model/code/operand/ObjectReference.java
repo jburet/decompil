@@ -54,8 +54,8 @@ public class ObjectReference implements Variable {
 	}
 
 	@Override
-	public void accept(OperandVisitor visitor) {
-		visitor.visitObjectReference(this);
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitObjectReference(this);
 	}
 
 	@Override

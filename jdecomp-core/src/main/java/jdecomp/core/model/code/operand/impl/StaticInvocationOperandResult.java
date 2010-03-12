@@ -16,18 +16,25 @@
 
 package jdecomp.core.model.code.operand.impl;
 
-import jdecomp.core.model.code.instruction.MethodInvocation;
+import jdecomp.core.model.code.instruction.StaticMethodInvocationInstruction;
 import jdecomp.core.model.code.operand.Operand;
-import jdecomp.core.model.constant.Type;
+import jdecomp.core.visitor.OperandVisitor;
 
-public abstract class InvocationOperandResult implements Operand {
+public class StaticInvocationOperandResult implements Operand {
 
-	protected MethodInvocation methodInvocation;
-	
-	public InvocationOperandResult(MethodInvocation methodInvocation){
-		this.methodInvocation = methodInvocation;
+	private StaticMethodInvocationInstruction staticMethodInvocationInstruction;
+
+	public StaticInvocationOperandResult(StaticMethodInvocationInstruction methodInvocation) {
+		this.staticMethodInvocationInstruction = methodInvocation;
 	}
-	
-	public abstract Type getReturnType();
+
+	@Override
+	public <T> T accept(OperandVisitor<T> visitor) {
+		return visitor.visitStaticInvocationOperandResult(this);
+	}
+
+	public StaticMethodInvocationInstruction getStaticMethodInvocationInstruction() {
+		return staticMethodInvocationInstruction;
+	}
 
 }

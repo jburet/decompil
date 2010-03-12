@@ -31,7 +31,7 @@ import jdecomp.core.model.code.instruction.StatementInstruction;
 import jdecomp.core.model.code.instruction.StaticMethodInvocationInstruction;
 import jdecomp.core.model.code.instruction.SwitchInstruction;
 import jdecomp.core.model.code.instruction.UnconditionalBranching;
-import jdecomp.core.model.code.operand.impl.ArrayReference;
+import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
 import jdecomp.core.visitor.MethodVisitor;
 
 public class JavaCodeVisitor implements MethodVisitor {
@@ -48,8 +48,7 @@ public class JavaCodeVisitor implements MethodVisitor {
 	public void visitConditionalBranching(ConditionalBrancheInstruction conditionalBranching) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("if(");
-		conditionalBranching.getCondition().accept(javaOperandVisitor);
-		sb.append(javaOperandVisitor.getJavaString());
+		sb.append(conditionalBranching.getCondition().accept(javaOperandVisitor));
 		sb.append(") goto : " + conditionalBranching.getBranchIndex());
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
@@ -80,8 +79,7 @@ public class JavaCodeVisitor implements MethodVisitor {
 	public void visitAssignation(AssignationInstruction assignationInstruction) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(assignationInstruction.getVarName() + " = ");
-		assignationInstruction.getValue().accept(javaOperandVisitor);
-		sb.append(javaOperandVisitor.getJavaString());
+		sb.append(assignationInstruction.getValue().accept(javaOperandVisitor));
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
 
@@ -90,8 +88,7 @@ public class JavaCodeVisitor implements MethodVisitor {
 		StringBuffer sb = new StringBuffer();
 		sb.append("return ");
 		if (returnInstruction.getOperand() != null) {
-			returnInstruction.getOperand().accept(javaOperandVisitor);
-			sb.append(javaOperandVisitor.getJavaString());
+			sb.append(returnInstruction.getOperand().accept(javaOperandVisitor));
 		}
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
@@ -99,16 +96,15 @@ public class JavaCodeVisitor implements MethodVisitor {
 	@Override
 	public void visitInstanceMethodInvocation(InstanceMethodInvocationInstruction instanceMethodInvocationInstruction) {
 		StringBuffer sb = new StringBuffer();
-		instanceMethodInvocationInstruction.getIntance().accept(javaOperandVisitor);
-		sb.append(javaOperandVisitor.getJavaString());
+		sb.append(instanceMethodInvocationInstruction.getIntance().accept(javaOperandVisitor));
 		sb.append("." + instanceMethodInvocationInstruction.getMethodName() + "(");
 		for (int i = instanceMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
-			instanceMethodInvocationInstruction.getArgs()[i].accept(javaOperandVisitor);
-			sb.append(javaOperandVisitor.getJavaString());
+			sb.append(instanceMethodInvocationInstruction.getArgs()[i].accept(javaOperandVisitor));
 			if (i > 0) {
 				sb.append(", ");
 			}
 		}
+		sb.append(")");
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
 
@@ -122,8 +118,7 @@ public class JavaCodeVisitor implements MethodVisitor {
 	public void visitSwitch(SwitchInstruction switchInstruction) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("switch(");
-		switchInstruction.getIndex().accept(javaOperandVisitor);
-		sb.append(javaOperandVisitor.getJavaString());
+		sb.append(switchInstruction.getIndex().accept(javaOperandVisitor));
 		sb.append(") {");
 		javaIns.add(new JavaSourceInstruction(sb.toString()));
 
@@ -148,8 +143,7 @@ public class JavaCodeVisitor implements MethodVisitor {
 		sb.append(staticMethodInvocationInstruction.getClassName() + "."
 				+ staticMethodInvocationInstruction.getMethodName() + "(");
 		for (int i = staticMethodInvocationInstruction.getArgs().length - 1; i >= 0; i--) {
-			staticMethodInvocationInstruction.getArgs()[i].accept(javaOperandVisitor);
-			sb.append(javaOperandVisitor.getJavaString());
+			sb.append(staticMethodInvocationInstruction.getArgs()[i].accept(javaOperandVisitor));
 			if (i > 0) {
 				sb.append(", ");
 			}
@@ -160,20 +154,15 @@ public class JavaCodeVisitor implements MethodVisitor {
 	@Override
 	public void visitArrayAssignation(AssignationArrayInstruction assignationArrayInstruction) {
 		StringBuffer sb = new StringBuffer();
-		if (assignationArrayInstruction.getArrayRef() instanceof ArrayReference
-				&& ((ArrayReference) assignationArrayInstruction.getArrayRef()).getName() != null) {
-			assignationArrayInstruction.getArrayRef().accept(javaOperandVisitor);
-			sb.append(javaOperandVisitor.getJavaString());
+		if (!(assignationArrayInstruction.getArrayRef() instanceof ConstantArrayReference)) {
+			sb.append(assignationArrayInstruction.getArrayRef().accept(javaOperandVisitor));
 			sb.append("[");
-			assignationArrayInstruction.getIndex().accept(javaOperandVisitor);
-			sb.append(javaOperandVisitor.getJavaString());
+			sb.append(assignationArrayInstruction.getIndex().accept(javaOperandVisitor));
 			sb.append("] = ");
-			assignationArrayInstruction.getValue().accept(javaOperandVisitor);
-			sb.append(javaOperandVisitor.getJavaString());
-		} else {
-			// TODO On stocke les assignations dans la reference du tableau
+			sb.append(assignationArrayInstruction.getValue().accept(javaOperandVisitor));
+
+			javaIns.add(new JavaSourceInstruction(sb.toString()));
 		}
-		javaIns.add(new JavaSourceInstruction(sb.toString()));
 	}
 
 }

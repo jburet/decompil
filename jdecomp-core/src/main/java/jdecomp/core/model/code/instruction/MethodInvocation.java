@@ -18,12 +18,14 @@ package jdecomp.core.model.code.instruction;
 
 import jdecomp.core.model.constant.Type;
 
-public abstract class MethodInvocation extends Instruction{
+public abstract class MethodInvocation extends Instruction {
 
 	public MethodInvocation(short currentIndex) {
 		super(currentIndex);
 	}
-	
+
 	public abstract Type getReturnType();
+
+	public abstract String getMethodName();
 
 }

@@ -23,7 +23,6 @@ import jdecomp.core.model.attribute.AttributeType;
 import jdecomp.core.model.attribute.Code;
 import jdecomp.core.model.classes.ClassFile;
 import jdecomp.core.model.code.Descriptor;
-import jdecomp.core.model.constant.Type;
 
 public class MethodInfo {
 	private short accessFlags;
@@ -90,20 +89,19 @@ public class MethodInfo {
 		return null;
 	}
 
-	public Type[] getArgType() {
+	public Descriptor[] getArgType() {
 		String descriptorDecoded = this.getDecodeMethodDescriptor();
-		String listType = descriptorDecoded.substring(descriptorDecoded
-				.indexOf('(') + 1, descriptorDecoded.indexOf(')'));
+		String listType = descriptorDecoded.substring(descriptorDecoded.indexOf('(') + 1, descriptorDecoded
+				.indexOf(')'));
 		return DescriptorParser.parseDecodedMethodDescriptor(listType);
 	}
 
 	public String[] getArgName() {
 		String descriptorDecoded = this.getDecodeMethodDescriptor();
-		String listType = descriptorDecoded.substring(descriptorDecoded
-				.indexOf('(') + 1, descriptorDecoded.indexOf(')'));
+		String listType = descriptorDecoded.substring(descriptorDecoded.indexOf('(') + 1, descriptorDecoded
+				.indexOf(')'));
 		// FIXME Use debug information if present
-		String[] res = new String[DescriptorParser
-				.parseDecodedMethodDescriptor(listType).length];
+		String[] res = new String[DescriptorParser.parseDecodedMethodDescriptor(listType).length];
 		for (int i = 0; i < res.length; i++) {
 			res[i] = "args" + (i + 1);
 		}
@@ -112,8 +110,7 @@ public class MethodInfo {
 
 	public Descriptor getReturnType() {
 		String descriptorDecoded = this.getDecodeMethodDescriptor();
-		return ClassFileUtils.parseDescriptor(descriptorDecoded
-				.substring(descriptorDecoded.lastIndexOf(')') + 1));
+		return ClassFileUtils.parseDescriptor(descriptorDecoded.substring(descriptorDecoded.lastIndexOf(')') + 1));
 	}
 
 	public ClassFile getReferentClassFile() {
@@ -121,7 +118,6 @@ public class MethodInfo {
 	}
 
 	public String getDecodeMethodDescriptor() {
-		return ClassFileUtils.decodeUTF(getReferentClassFile(), this
-				.getDescriptorIndex());
+		return ClassFileUtils.decodeUTF(getReferentClassFile(), this.getDescriptorIndex());
 	}
 }

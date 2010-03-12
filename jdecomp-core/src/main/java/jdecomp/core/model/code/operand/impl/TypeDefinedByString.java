@@ -33,4 +33,16 @@ public class TypeDefinedByString implements Type {
 		return false;
 	}
 
+	@Override
+	public boolean isString() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isLongType() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

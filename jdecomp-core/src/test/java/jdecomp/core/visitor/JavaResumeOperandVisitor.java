@@ -9,6 +9,8 @@ import jdecomp.core.model.code.operand.impl.ArrayReference;
 import jdecomp.core.model.code.operand.impl.ConditionalOperation;
 import jdecomp.core.model.code.operand.impl.Constant;
 import jdecomp.core.model.code.operand.impl.ConstantArrayReference;
+import jdecomp.core.model.code.operand.impl.InstanceInvocationOperandResult;
+import jdecomp.core.model.code.operand.impl.StaticInvocationOperandResult;
 
 public class JavaResumeOperandVisitor implements OperandVisitor<Object> {
 
@@ -83,6 +85,35 @@ public class JavaResumeOperandVisitor implements OperandVisitor<Object> {
 		System.out.print("[");
 		arrayAccessInstruction.getIndex().accept(this);
 		System.out.print("]");
+		return null;
+	}
+
+	@Override
+	public String visitInstanceInvocationOperandResult(InstanceInvocationOperandResult invocationOperandResult) {
+		System.out.print(invocationOperandResult.getInstanceMethodInvocationInstruction().getIntance().accept(this));
+		System.out.print("." + invocationOperandResult.getInstanceMethodInvocationInstruction().getMethodName() + "(");
+		for (int i = invocationOperandResult.getInstanceMethodInvocationInstruction().getArgs().length - 1; i >= 0; i--) {
+			System.out
+					.print(invocationOperandResult.getInstanceMethodInvocationInstruction().getArgs()[i].accept(this));
+			if (i > 0) {
+				System.out.print(", ");
+			}
+		}
+		System.out.print(")");
+		return null;
+	}
+
+	@Override
+	public String visitStaticInvocationOperandResult(StaticInvocationOperandResult invocationOperandResult) {
+		System.out.print(invocationOperandResult.getStaticMethodInvocationInstruction().getClassName());
+		System.out.print("." + invocationOperandResult.getStaticMethodInvocationInstruction().getMethodName() + "(");
+		for (int i = invocationOperandResult.getStaticMethodInvocationInstruction().getArgs().length - 1; i >= 0; i--) {
+			System.out.print(invocationOperandResult.getStaticMethodInvocationInstruction().getArgs()[i].accept(this));
+			if (i > 0) {
+				System.out.print(", ");
+			}
+		}
+		System.out.print(")");
 		return null;
 	}
 

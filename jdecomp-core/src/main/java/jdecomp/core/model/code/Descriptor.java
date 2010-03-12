@@ -41,6 +41,11 @@ public class Descriptor implements Type {
 		this.className = classname;
 	}
 
+	public Descriptor(String classname) {
+		this(DescriptorType.CLASS);
+		this.className = classname;
+	}
+
 	public Descriptor(DescriptorType descriptorType, int arrayLevel) {
 		this(descriptorType);
 		this.arrayLevel = arrayLevel;
@@ -66,6 +71,17 @@ public class Descriptor implements Type {
 	@Override
 	public boolean isArray() {
 		return arrayLevel > 0;
+	}
+
+	@Override
+	public boolean isString() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isLongType() {
+		return (descriptorType.equals(DescriptorType.LONG) || descriptorType.equals(DescriptorType.DOUBLE));
 	}
 
 }
